@@ -5,30 +5,30 @@ import hashlib
 
 from datetime import datetime
 #Initialize the app from Flask
-app = Flask(__name__)
+app = Flask(__name__, static_url_path ="", static_folder ="static")
+
 
 #Configure MySQL
 conn = pymysql.connect(host='localhost',
-                    #    port=8889,
+                       port=3306,
                        user='root',
-                    #    password='root',
-                       db='findEats',
+                       password='',
+                       db='findeats',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
 
-@app.route("/")
 
-def index():
+@app.route("/")
+def hello():
     return render_template("index.html")
 
+@app.route("/login")
 def login():
     return render_template("login.html")
 
+@app.route("/register")
 def register():
     return render_template("register.html")
-
-def home():
-    return render_template("home.html")
 
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth(): #done
@@ -88,3 +88,6 @@ def registerAuth(): #done
             return render_template('index.html')
     else:
         return render_template('register.html')
+
+if __name__ == "__main__":
+    app.run('127.0.0.1', 5000, debug = False)
