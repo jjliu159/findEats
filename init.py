@@ -6,14 +6,14 @@ import hashlib
 from datetime import datetime
 #Initialize the app from Flask
 app = Flask(__name__, static_url_path ="", static_folder ="static")
-
+app.secret_key = 'super secret key'
 
 #Configure MySQL
 conn = pymysql.connect(host='localhost',
                        port=3306,
                        user='root',
-                       password='',
-                       db='findeats',
+                       password='chingchong',
+                       db='findEats',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
 
@@ -50,7 +50,9 @@ def loginAuth(): #done
         #creates a session for the the user
         #session is a built in
         session['username'] = username
-        return redirect(url_for('home'))
+        print('here')
+        # return redirect(url_for('home'))
+        return render_template("map.html")
     else:
         #returns an error message to the html page
         error = 'Invalid login or username'

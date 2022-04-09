@@ -17,3 +17,4 @@ pass VARCHAR(50) ,
 email VARCHAR(50) ,
 PRIMARY KEY (username)
 );
+
