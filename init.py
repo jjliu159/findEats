@@ -1,19 +1,21 @@
 #Import Flask Library
 from flask import Flask, render_template, request, session, url_for, redirect
+from flask_googlemaps import GoogleMaps
 import pymysql.cursors
 import hashlib
+
 
 from datetime import datetime
 #Initialize the app from Flask
 app = Flask(__name__, static_url_path ="", static_folder ="static")
-app.secret_key = 'super secret key'
+# app.config['GOOGLEMAPS_KEY'] = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
 
 #Configure MySQL
 conn = pymysql.connect(host='localhost',
                        port=3306,
                        user='root',
-                       password='chingchong',
-                       db='findEats',
+                       password='',
+                       db='findeats',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
 
@@ -39,7 +41,7 @@ def loginAuth(): #done
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
-    query = 'SELECT * FROM Person WHERE username = %s and password = %s'
+    query = 'SELECT * FROM Person WHERE username = %s and pass = %s'
     cursor.execute(query, (username, password))
     #stores the results in a variable
     data = cursor.fetchone()
@@ -49,10 +51,9 @@ def loginAuth(): #done
     if(data):
         #creates a session for the the user
         #session is a built in
-        session['username'] = username
         print('here')
-        # return redirect(url_for('home'))
-        return render_template("map.html")
+        # return redirect(url_fo   r('home'))
+        return render_template('map.html')
     else:
         #returns an error message to the html page
         error = 'Invalid login or username'
@@ -90,6 +91,36 @@ def registerAuth(): #done
             return render_template('index.html')
     else:
         return render_template('register.html')
+
+# @app.route("/map")
+# def mapview():
+#     # creating a map in the view
+#     mymap = Map(
+#         identifier="view-side",
+#         lat=37.4419,
+#         lng=-122.1419,
+#         markers=[(37.4419, -122.1419)]
+#     )
+#     sndmap = Map(
+#         identifier="sndmap",
+#         lat=37.4419,
+#         lng=-122.1419,
+#         markers=[
+#           {
+#              'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+#              'lat': 37.4419,
+#              'lng': -122.1419,
+#              'infobox': "<b>Hello World</b>"
+#           },
+#           {
+#              'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+#              'lat': 37.4300,
+#              'lng': -122.1400,
+#              'infobox': "<b>Hello World from other place</b>"
+#           }
+#         ]
+#     )
+#     return render_template('example.html', mymap=mymap, sndmap=sndmap)
 
 if __name__ == "__main__":
     app.run('127.0.0.1', 5000, debug = False)
