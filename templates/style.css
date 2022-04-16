@@ -1,0 +1,27 @@
+.login-button-container {
+  margin: 32px -15px;
+}
+
+.sign-in {
+ padding-left: 0;
+}
+
+.register {
+ padding-right: 0;
+}
+
+.restaurant__button,
+.customer_button {
+  margin: 0 auto;
+  display:inline;
+  outline: 1px solid black;
+  
+}
+.restaurant__button,
+.customer_button:focus{
+  background-color: green;
+}
+.restaurant__button,
+.customer_button:active{
+  background-color: green;
+}
