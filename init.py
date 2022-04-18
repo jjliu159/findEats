@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, session, url_for, redirect
 from flask_googlemaps import GoogleMaps
 import pymysql.cursors
 import hashlib
+import psycopg2 
 
 
 from datetime import datetime
@@ -10,14 +11,21 @@ from datetime import datetime
 app = Flask(__name__, static_url_path ="", static_folder ="static")
 # app.config['GOOGLEMAPS_KEY'] = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
 
+
+#Configure PostgreSQL
+conn = psycopg2.connect(host = 'localhost',
+                        user = 'postgres',
+                        password = '',
+                        dbname = 'findeats',
+                        )
 #Configure MySQL
-conn = pymysql.connect(host='localhost',
-                       port=3306,
-                       user='root',
-                       password='',
-                       db='findeats',
-                       charset='utf8mb4',
-                       cursorclass=pymysql.cursors.DictCursor)
+# conn = pymysql.connect(host='localhost',
+#                        port=5432,
+#                        user='root',
+#                        password='',
+#                        db='findeats',
+#                        charset='utf8mb4',
+#                        cursorclass=pymysql.cursors.DictCursor)
 
 
 @app.route("/")
@@ -41,7 +49,7 @@ def loginAuth(): #done
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
-    query = 'SELECT * FROM Person WHERE username = %s and pass = %s'
+    query = 'SELECT * FROM Users WHERE username = %s and pass = %s'
     cursor.execute(query, (username, password))
     #stores the results in a variable
     data = cursor.fetchone()
@@ -66,29 +74,47 @@ def registerAuth(): #done
         #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
-        firstName = request.form['firstName']
-        lastName = request.form['lastName']
         email = request.form['email']
+        checkUser = request.form['checkUser']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
 
         #cursor used to send queries
         cursor = conn.cursor()
         #executes query
-        query = 'SELECT * FROM Person WHERE username = %s'
-        cursor.execute(query, (username))
+        # query = 'SELECT * FROM Users WHERE username = %s'
+        # cursor.execute(query, (username))
         #stores the results in a variable
-        data = cursor.fetchall()
+        # data = cursor.fetchall()
         #use fetchall() if you are expecting more than 1 data row
         error = None
-        if(data):
-            #If the previous query returns data, then user exists
-            error = "This user already exists"
-            return render_template('register.html', error = error)
+        if checkUser == "true":
+            query = 'SELECT * FROM Owners WHERE username = %s'
+            cursor.execute(query,(username))
+            data = cursor.fetchall()
+            if data:
+                error = "This user already exists"
+                return render_template('register.html', error = error)
+            else:
+                ins = 'INSERT INTO Owners VALUES(%s, %s, %s)'
+                cursor.execute(ins,(username,password,email))
+                conn.commit()
+                cursor.close()
+                return redner_template('index.html')
         else:
-            ins = 'INSERT INTO Person VALUES(%s, %s, %s, %s, %s)'
-            cursor.execute(ins, (username, password, firstName, lastName, email))
-            conn.commit()
-            cursor.close()
-            return render_template('index.html')
+            query = 'SELECT * FROM Users WHERE username = %s'
+            cursor.execute(query,(username))
+            data = cursor.fetchall()
+            if(data):
+                #If the previous query returns data, then user exists
+                error = "This user already exists"
+                return render_template('register.html', error = error)
+            else:
+                ins = 'INSERT INTO Users VALUES(%s, %s, %s,%s,%s)'
+                cursor.execute(ins, (username, password,latitude,longitude,email))
+                conn.commit()
+                cursor.close()
+                return render_template('index.html')
     else:
         return render_template('register.html')
 
