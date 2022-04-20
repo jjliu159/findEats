@@ -1,0 +1,15 @@
+CREATE TABLE User(
+    username VARCHAR(50) , 
+    password VARCHAR(50) , 
+    email VARCHAR(50) , 
+    PRIMARY KEY (username,email) 
+);
+
+CREATE Table Owner(
+    username VARCHAR(50),
+    password VARCHAR(50),
+    longitude float,
+    latitude float,
+    email VARCHAR(50),
+    PRIMARY KEY (username,email)
+)
