@@ -12,7 +12,7 @@ from datetime import datetime
 #Initialize the app from Flask
 app = Flask(__name__, static_url_path ="", static_folder ="static")
 # app.config['GOOGLEMAPS_KEY'] = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
-
+app.secret_key = "random string"
 
 
 #Configure MySQL
@@ -24,9 +24,9 @@ app = Flask(__name__, static_url_path ="", static_folder ="static")
 
 conn = psycopg2.connect(
         host="localhost",
-        port = 5431,
-        database="test",
-        user="alanlu",
+        port = 5432,
+        database="postgres",
+        user="postgres",
         password="")
 
 @app.route("/")
@@ -108,18 +108,18 @@ def registerAuth(): #done
         #use fetchall() if you are expecting more than 1 data row
         error = None
         if checkUser == "true":
-            query = 'SELECT * FROM Owners WHERE username = %s'
+            query = 'SELECT * FROM person WHERE username = %s'
             cursor.execute(query,(username))
             data = cursor.fetchall()
             if data:
                 error = "This user already exists"
                 return render_template('register.html', error = error)
             else:
-                ins = 'INSERT INTO Owners VALUES(%s, %s, %s)'
-                cursor.execute(ins,(username,password,email))
+                ins = 'INSERT INTO person(userName, password, owner) VALUES(%s, %s, %s)'
+                cursor.execute(ins,(username,password,checkUser))
                 conn.commit()
                 cursor.close()
-                return redner_template('index.html')
+                return render_template('index.html')
         else:
             query = 'SELECT * FROM Users WHERE username = %s'
             cursor.execute(query,(username))
@@ -136,6 +136,11 @@ def registerAuth(): #done
                 return render_template('index.html')
     else:
         return render_template('register.html')
+
+@app.route('/postmethod', methods = ['POST'])
+def get_post_javascript_data():
+    jsdata = request.form['javascript_data']
+    return jsdata
 
 # @app.route("/map")
 # def mapview():
