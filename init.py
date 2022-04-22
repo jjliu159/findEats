@@ -1,5 +1,6 @@
 #Import Flask Library
-from flask import Flask, render_template, request, session, url_for, redirect
+import json
+from flask import Flask, render_template, request, session, jsonify, url_for, redirect
 # import pymysql.cursors
 import psycopg2
 import hashlib
@@ -42,8 +43,13 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/getPins",methods=['GET'])
-def retreivePins():
+@app.route("/getPins",methods=['POST'])
+def retrievePins():
+    if request.method == 'POST':
+        lat = request.form['Latitude']
+        print("LATITUDE:", lat)
+        lng = request.form['Longitude']
+        print("LONGITUDE: ", lng)
     cursor = conn.cursor()
     query = 'SELECT * FROM person'# WHERE owner = True;'
     # cursor.execute(query)
@@ -136,11 +142,6 @@ def registerAuth(): #done
                 return render_template('index.html')
     else:
         return render_template('register.html')
-
-@app.route('/postmethod', methods = ['POST'])
-def get_post_javascript_data():
-    jsdata = request.form['javascript_data']
-    return jsdata
 
 # @app.route("/map")
 # def mapview():
