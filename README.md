@@ -28,3 +28,7 @@ ADD user_id INT PRIMARY KEY IDENTITY (1, 1));
 
 INSERT INTO person(userName,password,owner, latitude, longitude) 
 VALUES ('alan','loooo',True, 10.1,10.2);
+
+
+
+

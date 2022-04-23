@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, session, url_for, redirect
 import psycopg2
 import hashlib
 import psycopg2 
+import math
 
 
 
@@ -12,8 +13,7 @@ from datetime import datetime
 #Initialize the app from Flask
 app = Flask(__name__, static_url_path ="", static_folder ="static")
 # app.config['GOOGLEMAPS_KEY'] = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
-
-
+app.secret_key = 'the random string'
 
 #Configure MySQL
 # conn = psycopg2.connect(host='localhost',
@@ -42,17 +42,21 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/getPins",methods=['GET'])
+@app.route("/getPins",methods=['POST'])
 def retreivePins():
+    print(request.get_json())
     cursor = conn.cursor()
-    query = 'SELECT * FROM person'# WHERE owner = True;'
+    query = 'SELECT * FROM person WHERE owner = True;'
     # cursor.execute(query)
     cursor.execute('SELECT * FROM person')
     #stores the results in a variable
     data = cursor.fetchall()
+    counter = 0
+    # for i in data:
+    #     if 
     print('data',data)
     
-    
+
 
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth(): #done
@@ -97,18 +101,20 @@ def registerAuth(): #done
         checkUser = request.form['checkUser']
         latitude = request.form['latitude']
         longitude = request.form['longitude']
-
+        print(request.form)
+        print(username)
         #cursor used to send queries
         cursor = conn.cursor()
         #executes query
+        username = "alan"
         query = 'SELECT * FROM person WHERE username = %s'
-        cursor.execute(query, (username))
+        cursor.execute(query,[username])
         #stores the results in a variable
         # data = cursor.fetchall()
         #use fetchall() if you are expecting more than 1 data row
         error = None
         if checkUser == "true":
-            query = 'SELECT * FROM Owners WHERE username = %s'
+            query = 'SELECT * FROM per WHERE username = %s'
             cursor.execute(query,(username))
             data = cursor.fetchall()
             if data:
@@ -119,7 +125,7 @@ def registerAuth(): #done
                 cursor.execute(ins,(username,password,email))
                 conn.commit()
                 cursor.close()
-                return redner_template('index.html')
+                return render_template('index.html')
         else:
             query = 'SELECT * FROM Users WHERE username = %s'
             cursor.execute(query,(username))
@@ -166,6 +172,13 @@ def registerAuth(): #done
 #         ]
 #     )
 #     return render_template('example.html', mymap=mymap, sndmap=sndmap)
+
+def getDistance(x1,y1,x2,y2):
+    return math.sqrt( ((x1-x2)**2)+((y1-y2)**2) )
+
+    
+    
+    
 
 if __name__ == "__main__":
     app.run('127.0.0.1', 5000, debug = False)
