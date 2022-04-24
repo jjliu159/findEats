@@ -28,17 +28,7 @@ function sendCoord(lat, lng) {
   var dict = {"Latitude" : lat, 
                 "Longitude" : lng,
               };
-
-    // var request = new XMLHttpRequest();
-    // request.open('POST', '/getPins', true);
-    // request.send(dict);
-
   $.post( "/getPins", dict);
-  console.log("DICTIONARY: ", dict)
-  /*
-  $.post( "/getPins", {
-    coords: dict 
-});*/
 }
 
 function geocodeAddress(geocoder, inputMap) {
