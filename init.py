@@ -1,11 +1,12 @@
 #Import Flask Library
-from flask import Flask, render_template, request, session, url_for, redirect
+import json
+from flask import Flask, Response, render_template, request, session, jsonify, url_for, redirect
 # import pymysql.cursors
 import psycopg2
 import hashlib
 import psycopg2 
 import math
-
+from geopy.distance import geodesic
 
 
 
@@ -13,21 +14,22 @@ from datetime import datetime
 #Initialize the app from Flask
 app = Flask(__name__, static_url_path ="", static_folder ="static")
 # app.config['GOOGLEMAPS_KEY'] = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
-app.secret_key = 'the random string'
+app.secret_key = "random string"
+
 
 #Configure MySQL
-# conn = psycopg2.connect(host='localhost',
-#                        port=5431,
-#                        user='alanlu',
-#                        password='chingchong',
-#                        db='test',)
+conn = psycopg2.connect(host='localhost',
+                       port=5431,
+                       user='alanlu',
+                       password='chingchong',
+                       database='test',)
 
-conn = psycopg2.connect(
-        host="localhost",
-        port = 5431,
-        database="test",
-        user="alanlu",
-        password="")
+# conn = psycopg2.connect(
+#         host="localhost",
+#         port = 5432,
+#         database="postgres",
+#         user="postgres",
+#         password="")
 
 @app.route("/")
 def hello():
@@ -43,8 +45,12 @@ def register():
 
 
 @app.route("/getPins",methods=['POST'])
-def retreivePins():
-    print(request.get_json())
+def retrievePins():
+    if request.method == 'POST':
+        lat = request.form['Latitude']
+        print("LATITUDE:", lat)
+        lng = request.form['Longitude']
+        print("LONGITUDE: ", lng)
     cursor = conn.cursor()
     query = 'SELECT * FROM person WHERE owner = True;'
     # cursor.execute(query)
@@ -55,6 +61,19 @@ def retreivePins():
     # for i in data:
     #     if 
     print('data',data)
+    dest = (lat, lng)
+    responseData = []
+    for i in data:
+        origin = (i[4] ,i[5])
+        
+        if geodesic(origin, dest).meters<5000:
+            responseData.append({
+                "message":i[1],
+                "longitude":i[5],
+                "latitude":i[4]
+            })
+    print(responseData)
+    return Response(json.dumps(responseData), mimetype='text/json') 
     
 
 
@@ -114,15 +133,15 @@ def registerAuth(): #done
         #use fetchall() if you are expecting more than 1 data row
         error = None
         if checkUser == "true":
-            query = 'SELECT * FROM per WHERE username = %s'
+            query = 'SELECT * FROM person WHERE username = %s'
             cursor.execute(query,(username))
             data = cursor.fetchall()
             if data:
                 error = "This user already exists"
                 return render_template('register.html', error = error)
             else:
-                ins = 'INSERT INTO Owners VALUES(%s, %s, %s)'
-                cursor.execute(ins,(username,password,email))
+                ins = 'INSERT INTO person(userName, password, owner) VALUES(%s, %s, %s)'
+                cursor.execute(ins,(username,password,checkUser))
                 conn.commit()
                 cursor.close()
                 return render_template('index.html')
