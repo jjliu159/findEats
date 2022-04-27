@@ -11,18 +11,17 @@
 <input type="text" id = "email" placeholder="email" required/> </br>
 <input type="checkbox" id = "isOwner" placeholder="isOwner"/> Are You A Store Owner?</br>
 <input type ="text" id = "restaurantName" placeholder="Enter name of restaurant"> </br>
-<input type ="text" id = "address" placeholder="Enter your address"> </br>
-<input type="text" id = "description" placeholder="Enter your  restaurant description"></br>
-<input type="int" id = "reservationAmount" placeholder="How many servings"></br>
+<input name ="user_input_autocomplete_address" id = "user_input_autocomplete_address" placeholder="Enter your restaurant address"> </br>
+<input type="text" id = "description" placeholder="Enter your restaurant description"></br>
+<input type="int" id = "reservationAmount" placeholder="How many servings?"></br>
 <button onclick="register()">Register</button>
 <script>
 
 	function register() {
+		console.log("??????")
 		if (document.getElementById('isOwner').checked) {
 			registerAddress()
-        } else {
-			// alert("NOT CHECKED")
-			
+        } else {			
             //preparing to send information over to the backend by organizing data into a data structure
 			var dict = {
 				'username': document.getElementById("username").value,
@@ -53,9 +52,7 @@
 
 	//the script runs here since registeraddress is not found if created on a different file
 	function registerAddress() {
-		console.log("WORLD")
-		address = document.getElementById("address").value;
-
+		address = document.getElementById("user_input_autocomplete_address").value;
 		const geocoder = new google.maps.Geocoder();
 		geocoder.geocode({ address: address }, (results, status) => {
 		if (status === google.maps.GeocoderStatus.OK) {
@@ -74,7 +71,7 @@
 				'latitude': lat,
 				'longitude': lng,
 				'description': document.getElementById("description").value,
-				'address': document.getElementById("address").value,
+				'address': address,
 				'reservationAmount': document.getElementById("reservationAmount").value,
 				'restaurantName': document.getElementById("restaurantName").value
 			}; 
@@ -110,9 +107,15 @@
 
 </html>
 
-
+<!-- 
 <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places">
 </script>
-
+-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Include Google Maps JS API  -->
+<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places"></script>
+
+<!-- Custom JS code to bind to Autocomplete API -->
+<script type="text/javascript" src="autocomplete.js"></script>

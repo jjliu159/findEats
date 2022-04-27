@@ -1,5 +1,3 @@
-
-var map;
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 40.76, lng: -73.983 },
@@ -48,13 +46,14 @@ function sendCoord(lat, lng) {
                 "Longitude" : lng,
               };
   $.post( "/getPins", dict,function(data, status){
-    // console.log("Data: " + data.longitude + "\nStatus: " + status);
-    // displayPins(JSON.parse(JSON.stringify(data)));
+    console.log("Data: " + data.longitude + "\nStatus: " + status);
+    displayPins(JSON.parse(JSON.stringify(data)));
+    displayStores(JSON.parse(JSON.stringify(data)));
   })
 }
 
 function geocodeAddress(geocoder, inputMap) {
-  const address = document.getElementById("address").value;
+  const address = document.getElementById("user_input_autocomplete_address").value;
 
   // Search for the address with the API
   geocoder.geocode({ address: address }, (results, status) => {
@@ -80,4 +79,25 @@ function geocodeAddress(geocoder, inputMap) {
         alert("Geocode error: " + status);
     }
 });
+}
+
+const displayStores = (array) => {
+  let html = '';
+  const table = document.getElementById("sidebar");
+  console.log(array);
+  array.forEach(({ message,restName, restAddress, description}) => {
+    const card = `
+    <a href="#" class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">${restName}</h5>
+    </div>
+    <h6 class="mb-1">${restAddress}</h3>
+    <p class="mb-1">${description}</p>
+    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+  </a>
+    `;
+
+    html += card
+  })
+  table.innerHTML = html;
 }
