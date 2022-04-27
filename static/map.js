@@ -85,7 +85,7 @@ const displayStores = (array) => {
   let html = '';
   const table = document.getElementById("sidebar");
   console.log(array);
-  array.forEach(({ message,restName, restAddress, description}) => {
+  array.forEach(({restName, restAddress, description}) => {
     const card = `
     <a href="#" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">

@@ -114,7 +114,7 @@ def loginAuth(): #done
             session['username'] = username
             print("method: ",request.method)
             # return redirect(url_for('home'))
-            return render_template("map.html", stores = [1,2,3,4,5,8,9])
+            return render_template("map.html")
         except Exception as e:
             print(e)
             
