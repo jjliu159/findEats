@@ -26,8 +26,8 @@ app.secret_key = "random string"
 conn = psycopg2.connect(
         host="localhost",
         port = 5432,
-        database="postgres",
-        user="postgres",
+        database="findeats",
+        user="",
         password="")
 
 @app.route("/")
@@ -96,50 +96,37 @@ def loginAuth(): #done
 @app.route('/registerAuth', methods=['GET', 'POST']) 
 def registerAuth(): #done
     if request.method == 'POST':
+        print("WHY")
         #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
         checkUser = request.form['checkUser']
-        latitude = request.form['latitude']
-        longitude = request.form['longitude']
+        latitude = request.form["latitude"]
+        longitude = request.form["longitude"]
+        message = request.form['message']
+
 
         #cursor used to send queries
         cursor = conn.cursor()
         #executes query
-        query = 'SELECT * FROM person WHERE username = %s'
-        cursor.execute(query, (username))
+        query = 'SELECT * FROM person WHERE userName = %s'
+        cursor.execute(query, (username,))
         #stores the results in a variable
         # data = cursor.fetchall()
         #use fetchall() if you are expecting more than 1 data row
         error = None
-        if checkUser == "true":
-            query = 'SELECT * FROM person WHERE username = %s'
-            cursor.execute(query,(username))
-            data = cursor.fetchall()
-            if data:
-                error = "This user already exists"
-                return render_template('register.html', error = error)
-            else:
-                ins = 'INSERT INTO person(userName, password, owner) VALUES(%s, %s, %s)'
-                cursor.execute(ins,(username,password,checkUser))
-                conn.commit()
-                cursor.close()
-                return render_template('index.html')
+        data = cursor.fetchall()
+
+        if data:
+            error = "This user already exists"
+            return "failure"
         else:
-            query = 'SELECT * FROM Users WHERE username = %s'
-            cursor.execute(query,(username))
-            data = cursor.fetchall()
-            if(data):
-                #If the previous query returns data, then user exists
-                error = "This user already exists"
-                return render_template('register.html', error = error)
-            else:
-                ins = 'INSERT INTO Users VALUES(%s, %s, %s,%s,%s)'
-                cursor.execute(ins, (username, password,latitude,longitude,email))
-                conn.commit()
-                cursor.close()
-                return render_template('index.html')
+            ins = 'INSERT INTO person (userName, password, owner, latitude, longitude, message) VALUES(%s, %s, %s, %s, %s, %s)'
+            cursor.execute(ins,(username,password, checkUser, latitude, longitude,message))
+            conn.commit()
+            cursor.close()
+            return "success"
     else:
         return render_template('register.html')
 

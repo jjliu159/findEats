@@ -21,7 +21,6 @@ function initMap() {
   // When user clicks submit-btn --> use geocode on the given address
   document.getElementById("submit-btn").addEventListener("click", () => {geocodeAddress(geocoder, map);
   });
-  
 }
 
 function sendCoord(lat, lng) {
@@ -40,6 +39,7 @@ function geocodeAddress(geocoder, inputMap) {
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
         // Display Longitude and Latitude
+        console.log("CHECK")
         console.log("LAT: ", lat)
         console.log("LAT: ", lng)
 
