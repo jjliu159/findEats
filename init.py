@@ -168,42 +168,9 @@ def registerAuth(): #done
     else:
         return render_template('register.html')
 
-# @app.route("/map")
-# def mapview():
-#     # creating a map in the view
-#     mymap = Map(
-#         identifier="view-side",
-#         lat=37.4419,
-#         lng=-122.1419,
-#         markers=[(37.4419, -122.1419)]
-#     )
-#     sndmap = Map(
-#         identifier="sndmap",
-#         lat=37.4419,
-#         lng=-122.1419,
-#         markers=[
-#           {
-#              'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-#              'lat': 37.4419,
-#              'lng': -122.1419,
-#              'infobox': "<b>Hello World</b>"
-#           },
-#           {
-#              'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-#              'lat': 37.4300,
-#              'lng': -122.1400,
-#              'infobox': "<b>Hello World from other place</b>"
-#           }
-#         ]
-#     )
-#     return render_template('example.html', mymap=mymap, sndmap=sndmap)
-
 def getDistance(x1,y1,x2,y2):
     return math.sqrt( ((x1-x2)**2)+((y1-y2)**2) )
 
-    
-    
-    
 
 if __name__ == "__main__":
     app.run('127.0.0.1', 5000, debug = False)
