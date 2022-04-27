@@ -15,7 +15,7 @@ from datetime import datetime
 app = Flask(__name__, static_url_path ="", static_folder ="static")
 # app.config['GOOGLEMAPS_KEY'] = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
 app.secret_key = "random string"
-
+app.config.update(TEMPLATES_AUTO_RELOAD = True)
 
 #Configure MySQL
 
@@ -73,24 +73,29 @@ def retrievePins():
     print('data',data)
     dest = (lat, lng)
     responseData = []
+    
     for i in data:
-        origin = (i[4] ,i[5])
+        print(i)
+        origin = (i[6] ,i[7])
         
         if geodesic(origin, dest).meters<5000:
             responseData.append({
-                "message":i[1],
-                "longitude":i[5],
-                "latitude":i[4]
+                "longitude":i[7],
+                "latitude":i[6],
+                "description":i[8],
+                "restName":i[5],
+                "restAddress":i[9],
             })
+    print("rendering Map2")
     print(responseData)
-    # return Response(json.dumps(responseData), mimetype='text/json') 
-    return render_template("map.html", stores = responseData)
+    return Response(json.dumps(responseData), mimetype='text/json') 
     
 
 
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth(): #done
     #grabs information from the forms
+    print('in loginauth')
     username = request.form['username']
     password = request.form['password']
 
