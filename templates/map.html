@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>45° Imagery</title>
-    <script src="../static/map.js"></script>  
-    <link rel="stylesheet" href="../static/map.css">
+    <script src="map.js"></script>  
+    <link rel="stylesheet" href="map.css">
     <!-- jsFiddle will insert css and js -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
@@ -25,15 +25,7 @@
         </script>
 
     </div>
-    <div id="map"></div>
-
-    <input 
-      id="pac-input"
-      class="controls"
-      type="text"
-      placeholder="Search Box"
-    />
-    
+    <!-- <div id="map"></div> -->
     
     <div id="container">
       <div id="sidebar">
@@ -47,7 +39,7 @@
               <p class="mb-1">{{store.description}}</p>
               <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
             </a>
-          {% end for %}
+          {% endfor %}
       </div>
       <div id="map"></div>
     </div>

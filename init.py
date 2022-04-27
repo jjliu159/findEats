@@ -20,11 +20,11 @@ app.secret_key = "random string"
 #Configure MySQL
 
 
-conn = psycopg2.connect(host='localhost',
-                       port=5432,
-                       user='postgres',
-                       password='',
-                       database='findeats',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5432,
+#                        user='postgres',
+#                        password='',
+#                        database='findeats',)
 
 
 #alan
@@ -34,12 +34,12 @@ conn = psycopg2.connect(host='localhost',
 #                        password='chingchong',
 #                        database='test',)
 
-# conn = psycopg2.connect(
-#         host="localhost",
-#         port = 5432,
-#         database="postgres",
-#         user="postgres",
-#         password="")
+conn = psycopg2.connect(
+        host="localhost",
+        port = 5432,
+        database="postgres",
+        user="postgres",
+        password="")
 
 @app.route("/")
 def hello():
