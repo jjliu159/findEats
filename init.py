@@ -34,12 +34,12 @@ conn = psycopg2.connect(host='localhost',
                        password='chingchong',
                        database='test',)
 
-conn = psycopg2.connect(
-        host="localhost",
-        port = 5432,
-        database="postgres",
-        user="postgres",
-        password="")
+# conn = psycopg2.connect(
+#         host="localhost",
+#         port = 5432,
+#         database="postgres",
+#         user="postgres",
+#         password="")
 
 @app.route("/")
 def hello():
@@ -52,6 +52,16 @@ def login():
 @app.route("/register")
 def register():
     return render_template("register.html")
+
+@app.route("/decrementCount",methods=['POST'])
+def decrementCount():
+    print('herererere')
+    id = request.form['id']
+    query = "UPDATE person SET reservationAmount = reservationAmount-1 WHERE user_id = %s;"
+    cursor = conn.cursor()
+    cursor.execute(query,id)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+    
 
 
 @app.route("/getPins",methods=['POST'])
@@ -85,6 +95,8 @@ def retrievePins():
                 "description":i[8],
                 "restName":i[5],
                 "restAddress":i[9],
+                "count":i[10],
+                "id":i[0]
             })
     print("rendering Map2")
     print(responseData)
@@ -116,7 +128,7 @@ def loginAuth(): #done
             session['username'] = username
             print("method: ",request.method)
             # return redirect(url_for('home'))
-            return render_template("map.html", stores = [1,2,3,4,5,8,9])
+            return render_template("map.html")
         except Exception as e:
             print(e)
             

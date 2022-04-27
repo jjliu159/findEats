@@ -61,9 +61,6 @@ function geocodeAddress(geocoder, inputMap) {
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
         // Display Longitude and Latitude
-        console.log("CHECK")
-        console.log("LAT: ", lat)
-        console.log("LAT: ", lng)
 
         sendCoord(lat, lng);
 
@@ -81,21 +78,34 @@ function geocodeAddress(geocoder, inputMap) {
 });
 }
 
-<<<<<<< HEAD
+function decrementCount(id){
+  console.log("ID: ",id)
+  var count;
+  $.post( "/decrementCount", {"id":id},function(data, status){
+    count=document.getElementById(id).innerHTML;
+    count = count.slice(15);
+    console.log(">",(count),"<");
+    document.getElementById(id).innerHTML = "Reserve Count: " + toString(parseInt(count)-1);
+  })
+
+}
 
 const displayStores = (array) => {
   let html = '';
   const table = document.getElementById("sidebar");
   console.log(array);
-  array.forEach(({ message,restName, restAddress, description}) => {
+  array.forEach(({ id, count,restName, restAddress, description}) => {
     const card = `
     <a href="#" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">${restName}</h5>
     </div>
+
     <h6 class="mb-1">${restAddress}</h3>
-    <p class="mb-1">${description}</p>
-    <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+    <p class="mb-1" >${description} </p>
+    <p class="mb-1" id = ${id} >Reserve count: ${count}</p>
+
+    <button onclick=decrementCount(${id})>Reserve Now</button>
   </a>
     `;
 
@@ -103,5 +113,3 @@ const displayStores = (array) => {
   })
   table.innerHTML = html;
 }
-=======
->>>>>>> 6b4485aa491e43435f70d1adbdb4ff0a19fa344e
