@@ -34,12 +34,12 @@ conn = psycopg2.connect(host='localhost',
                        password='chingchong',
                        database='test',)
 
-# conn = psycopg2.connect(
-#         host="localhost",
-#         port = 5432,
-#         database="postgres",
-#         user="postgres",
-#         password="")
+conn = psycopg2.connect(
+        host="localhost",
+        port = 5432,
+        database="postgres",
+        user="postgres",
+        password="")
 
 @app.route("/")
 def hello():
@@ -129,7 +129,7 @@ def loginAuth(): #done
 @app.route('/registerAuth', methods=['GET', 'POST']) 
 def registerAuth(): #done
     if request.method == 'POST':
-        #grabs information from the forms
+            #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']

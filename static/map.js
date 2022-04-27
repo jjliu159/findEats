@@ -1,5 +1,3 @@
-
-var map;
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 40.76, lng: -73.983 },
@@ -55,7 +53,7 @@ function sendCoord(lat, lng) {
 }
 
 function geocodeAddress(geocoder, inputMap) {
-  const address = document.getElementById("address").value;
+  const address = document.getElementById("user_input_autocomplete_address").value;
 
   // Search for the address with the API
   geocoder.geocode({ address: address }, (results, status) => {
@@ -83,6 +81,7 @@ function geocodeAddress(geocoder, inputMap) {
 });
 }
 
+<<<<<<< HEAD
 
 const displayStores = (array) => {
   let html = '';
@@ -104,3 +103,5 @@ const displayStores = (array) => {
   })
   table.innerHTML = html;
 }
+=======
+>>>>>>> 6b4485aa491e43435f70d1adbdb4ff0a19fa344e
