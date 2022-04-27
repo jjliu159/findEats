@@ -24,36 +24,15 @@ function initMap() {
   
 }
 
-function sendCoord(lat, lng) {
-  var dict = {"Latitude" : lat, 
-                "Longitude" : lng,
-              };
-
-    // var request = new XMLHttpRequest();
-    // request.open('POST', '/getPins', true);
-    // request.send(dict);
-
-  $.post( "/getPins", dict);
-  console.log("DICTIONARY: ", dict)
-  /*
-  $.post( "/getPins", {
-    coords: dict 
-});*/
-}
-
 function geocodeAddress(geocoder, inputMap) {
   const address = document.getElementById("address").value;
 
   // Search for the address with the API
   geocoder.geocode({ address: address }, (results, status) => {
-    if (status === google.maps.GeocoderStatus.OK) {
-        var lat = results[0].geometry.location.lat();
-        var lng = results[0].geometry.location.lng();
-        // Display Longitude and Latitude
-        console.log("LAT: ", lat)
-        console.log("LAT: ", lng)
-
-        sendCoord(lat, lng);
+    if (status === "OK") {
+        // Display results
+        //console.log(results)
+        console.log(results[0].geometry.location);
 
         // Set the location of the map obtained by the API
         inputMap.setCenter(results[0].geometry.location);
