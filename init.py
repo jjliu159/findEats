@@ -28,11 +28,11 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 
 
 #alan
-conn = psycopg2.connect(host='localhost',
-                       port=5431,
-                       user='alanlu',
-                       password='chingchong',
-                       database='test',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5431,
+#                        user='alanlu',
+#                        password='chingchong',
+#                        database='test',)
 
 # conn = psycopg2.connect(
 #         host="localhost",
@@ -78,8 +78,6 @@ def retrievePins():
     #stores the results in a variable
     data = cursor.fetchall()
     counter = 0
-    # for i in data:
-    #     if 
     print('data',data)
     dest = (lat, lng)
     responseData = []
@@ -145,10 +143,13 @@ def registerAuth(): #done
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        checkUser = request.form['checkUser']
+        isOwner = request.form['isOwner']
         latitude = request.form['latitude']
         longitude = request.form['longitude']
-        message = request.form['message']
+        description = request.form['description']
+        address = request.form['description']
+        reservationAmount = request.form['reservationAmount']
+        restaurantName = request.form['restaurantName']
 
 
         #cursor used to send queries
@@ -166,50 +167,22 @@ def registerAuth(): #done
             error = "This user already exists"
             return "failure"
         else:
-            ins = 'INSERT INTO person (userName, password, owner, latitude, longitude, message) VALUES(%s, %s, %s, %s, %s, %s)'
-            cursor.execute(ins,(username,password, checkUser, latitude, longitude,message))
+            if isOwner != "false":
+                ins = 'INSERT INTO person (username, password, email, isOwner, latitude, longitude, description, address, reservationAmount, restaurantName) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+                cursor.execute(ins,(username, password, email, True, latitude, longitude, description, address, reservationAmount, restaurantName))
+            else:
+                print
+                ins = 'INSERT INTO person (username, password, email, isOwner) VALUES(%s, %s, %s, %s)'
+                cursor.execute(ins,(username,password, email, False))
             conn.commit()
             cursor.close()
             return "success"
     else:
         return render_template('register.html')
 
-# @app.route("/map")
-# def mapview():
-#     # creating a map in the view
-#     mymap = Map(
-#         identifier="view-side",
-#         lat=37.4419,
-#         lng=-122.1419,
-#         markers=[(37.4419, -122.1419)]
-#     )
-#     sndmap = Map(
-#         identifier="sndmap",
-#         lat=37.4419,
-#         lng=-122.1419,
-#         markers=[
-#           {
-#              'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-#              'lat': 37.4419,
-#              'lng': -122.1419,
-#              'infobox': "<b>Hello World</b>"
-#           },
-#           {
-#              'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-#              'lat': 37.4300,
-#              'lng': -122.1400,
-#              'infobox': "<b>Hello World from other place</b>"
-#           }
-#         ]
-#     )
-#     return render_template('example.html', mymap=mymap, sndmap=sndmap)
-
 def getDistance(x1,y1,x2,y2):
     return math.sqrt( ((x1-x2)**2)+((y1-y2)**2) )
 
-    
-    
-    
 
 if __name__ == "__main__":
     app.run('127.0.0.1', 5000, debug = False)

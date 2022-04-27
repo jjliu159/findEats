@@ -12,23 +12,22 @@
     <div id = "floating_panel">
 
       <input id = "user_input_autocomplete_address" name = "user_input_autocomplete_address" placeholder = "Enter Address"/>
-      <input id = "submit-btn" type = "button" value = "Submit"/>
+      <input id = "submit-btn" type = "button" value = "Search"/>
 
       <script>
-        var input = document.getElementById("address");
-        console.log("============");
+        var input = document.getElementById("user_input_autocomplete_address");
+        // allows enter key to be click button
         input.addEventListener("keyup", function(event) {
           if (event.keyCode === 13) {
            event.preventDefault();
            document.getElementById("submit-btn").click();
           }
         });
-
+        document.getElementById("submit-btn").click();
       </script>
 
     </div>
 
-        
         
 
         </script>
