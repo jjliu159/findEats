@@ -1,3 +1,4 @@
+
 function initializeAutocomplete(id) {
     var element = document.getElementById(id);
     if (element) {

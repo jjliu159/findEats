@@ -123,7 +123,7 @@ def loginAuth(): #done
 @app.route('/registerAuth', methods=['GET', 'POST']) 
 def registerAuth(): #done
     if request.method == 'POST':
-        #grabs information from the forms
+            #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']

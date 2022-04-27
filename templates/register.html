@@ -10,13 +10,13 @@
 <input type="password" id = "password" placeholder="password" required/></br>
 <input type="text" id = "email" placeholder="email" required/> </br>
 <input type="checkbox" id = "checkUser" placeholder="checkUser" value="true" /> Store Owner?</br>
-<input type ="text" id = "address" placeholder="Enter your address"> </br>
+<input name ="user_input_autocomplete_address" id = "user_input_autocomplete_address" placeholder="Enter your address"> </br>
 <input type="text" id = "message" placeholder="Enter your message"></br>
 <button onclick="registerAddress()">Register</button>
 <script>
 	//the script runs here since registeraddress is not found if created on a different file
 	function registerAddress() {
-		address = document.getElementById("address").value;
+		address = document.getElementById("user_input_autocomplete_address").value;
 
 		const geocoder = new google.maps.Geocoder();
 		geocoder.geocode({ address: address }, (results, status) => {
@@ -69,9 +69,15 @@
 
 </html>
 
-
+<!-- 
 <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places&callback=initMap">
-</script>
+</script> -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Include Google Maps JS API -->
+<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places"></script>
+
+<!-- Custom JS code to bind to Autocomplete API -->
+<script type="text/javascript" src="autocomplete.js"></script>
