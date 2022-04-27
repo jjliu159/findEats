@@ -1,11 +1,12 @@
 #Import Flask Library
 import json
-from flask import Flask, render_template, request, session, jsonify, url_for, redirect
+from flask import Flask, Response, render_template, request, session, jsonify, url_for, redirect
 # import pymysql.cursors
 import psycopg2
 import hashlib
 import psycopg2 
-
+import math
+from geopy.distance import geodesic
 
 
 
@@ -17,18 +18,28 @@ app.secret_key = "random string"
 
 
 #Configure MySQL
+
+
+conn = psycopg2.connect(host='localhost',
+                       port=5432,
+                       user='postgres',
+                       password='',
+                       database='findeats',)
+
+
+#alan
 # conn = psycopg2.connect(host='localhost',
 #                        port=5431,
 #                        user='alanlu',
 #                        password='chingchong',
-#                        db='test',)
+#                        database='test',)
 
-conn = psycopg2.connect(
-        host="localhost",
-        port = 5432,
-        database="findeats",
-        user="",
-        password="")
+# conn = psycopg2.connect(
+#         host="localhost",
+#         port = 5432,
+#         database="postgres",
+#         user="postgres",
+#         password="")
 
 @app.route("/")
 def hello():
@@ -51,14 +62,30 @@ def retrievePins():
         lng = request.form['Longitude']
         print("LONGITUDE: ", lng)
     cursor = conn.cursor()
-    query = 'SELECT * FROM person'# WHERE owner = True;'
+    query = 'SELECT * FROM person WHERE owner = True;'
     # cursor.execute(query)
     cursor.execute('SELECT * FROM person')
     #stores the results in a variable
     data = cursor.fetchall()
+    counter = 0
+    # for i in data:
+    #     if 
     print('data',data)
+    dest = (lat, lng)
+    responseData = []
+    for i in data:
+        origin = (i[4] ,i[5])
+        
+        if geodesic(origin, dest).meters<5000:
+            responseData.append({
+                "message":i[1],
+                "longitude":i[5],
+                "latitude":i[4]
+            })
+    print(responseData)
+    return Response(json.dumps(responseData), mimetype='text/json') 
     
-    
+
 
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth(): #done
@@ -96,22 +123,21 @@ def loginAuth(): #done
 @app.route('/registerAuth', methods=['GET', 'POST']) 
 def registerAuth(): #done
     if request.method == 'POST':
-        print("WHY")
         #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
         checkUser = request.form['checkUser']
-        latitude = request.form["latitude"]
-        longitude = request.form["longitude"]
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
         message = request.form['message']
 
 
         #cursor used to send queries
         cursor = conn.cursor()
         #executes query
-        query = 'SELECT * FROM person WHERE userName = %s'
-        cursor.execute(query, (username,))
+        query = 'SELECT * FROM person WHERE username = %s'
+        cursor.execute(query,[username])
         #stores the results in a variable
         # data = cursor.fetchall()
         #use fetchall() if you are expecting more than 1 data row
@@ -159,6 +185,13 @@ def registerAuth(): #done
 #         ]
 #     )
 #     return render_template('example.html', mymap=mymap, sndmap=sndmap)
+
+def getDistance(x1,y1,x2,y2):
+    return math.sqrt( ((x1-x2)**2)+((y1-y2)**2) )
+
+    
+    
+    
 
 if __name__ == "__main__":
     app.run('127.0.0.1', 5000, debug = False)

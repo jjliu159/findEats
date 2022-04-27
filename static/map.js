@@ -1,5 +1,7 @@
+
+var map;
 function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
+  map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 40.76, lng: -73.983 },
     zoom: 15,
     mapTypeId: "terrain",
@@ -11,6 +13,7 @@ function initMap() {
           position: event.latLng,
           map: map,
       });
+      console.log(">>",event.latlng)
       console.log(event.latLng.toJSON())
       google.maps.event.removeListener(clickListener);
   });
@@ -23,11 +26,31 @@ function initMap() {
   });
 }
 
+function displayPins(data){
+  // var mapCanvas = document.getElementById('map_canvas');
+  var location, marker;
+  console.log(typeof(data));
+  for (let i = 0; i < data.length; i++) {
+    console.log({lat: data[i]["latitude"], lng: data[i]["longitude"]});
+    console.log(map);
+    // location = new google.maps.LatLng(data[i]["latitude"],data[i]["longitude"]);
+    new google.maps.Marker({
+      position: {lat: data[i]["latitude"], lng: data[i]["longitude"]},
+      map: map,
+    });
+    // marker = new google.maps.Marker({position:location});
+    // marker.setMap(mapCanvas);
+  }
+}
+
 function sendCoord(lat, lng) {
   var dict = {"Latitude" : lat, 
                 "Longitude" : lng,
               };
-  $.post( "/getPins", dict);
+  $.post( "/getPins", dict,function(data, status){
+    console.log("Data: " + data.longitude + "\nStatus: " + status);
+    displayPins(JSON.parse(JSON.stringify(data)));
+  })
 }
 
 function geocodeAddress(geocoder, inputMap) {

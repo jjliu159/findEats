@@ -26,7 +26,7 @@ ADD longitude FLOAT,
 ADD message VARCHAR(200) ,
 ADD user_id INT PRIMARY KEY IDENTITY (1, 1));
 
-INSERT INTO person(userName,passWORD,owner, latitude, longitude) VALUES ('alan','loooo',True, 10.1,10.2);
+INSERT INTO person(userName,passWORD,owner, latitude, longitude) VALUES ('alan','loooo',True, 40.731619616175706,-73.99907986879239);
 
 INSERT INTO person(userName, password, owner) VALUES ('alan','loooo',True);
 
