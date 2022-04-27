@@ -84,8 +84,8 @@ function decrementCount(id){
   $.post( "/decrementCount", {"id":id},function(data, status){
     count=document.getElementById(id).innerHTML;
     count = count.slice(15);
-    console.log(">",(count),"<");
-    document.getElementById(id).innerHTML = "Reserve Count: " + toString(parseInt(count)-1);
+    console.log(">",(count),(parseInt(count)-1),"<");
+    document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count)-1);
   })
 
 }
@@ -103,7 +103,7 @@ const displayStores = (array) => {
 
     <h6 class="mb-1">${restAddress}</h3>
     <p class="mb-1" >${description} </p>
-    <p class="mb-1" id = ${id} >Reserve count: ${count}</p>
+    <p class="mb-1" id = ${id} >Reserve Count: ${count}</p>
 
     <button onclick=decrementCount(${id})>Reserve Now</button>
   </a>
