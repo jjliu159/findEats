@@ -11,12 +11,16 @@ https://streamable.com/bt6biz
 SQL code is below:
 CREATE TABLE Person(
 user_id serial PRIMARY KEY,
+email VARCHAR(50) NOT NULL,
 userName VARCHAR(50) NOT NULL,
 password VARCHAR(50) NOT NULL,
-owner BOOLEAN NOT NULL,
+isOwner BOOLEAN NOT NULL,
+restaurantName VARCHAR(20),
 latitude FLOAT,
 longitude FLOAT,
-message VARCHAR(200) 
+description VARCHAR(200),
+address VARCHAR(100),
+reservationAmount INT
 );
 
 ALTER TABLE Person (

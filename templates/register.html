@@ -4,31 +4,37 @@
 </head>
 <body>
 
-<script src="map.js"></script>
+<!-- <script src="map.js"></script> -->
 
 <input type="text" id = "username" placeholder="username" required/> </br>
 <input type="password" id = "password" placeholder="password" required/></br>
 <input type="text" id = "email" placeholder="email" required/> </br>
-<input type="checkbox" id = "checkUser" placeholder="checkUser" /> Store Owner?</br>
+<input type="checkbox" id = "isOwner" placeholder="isOwner"/> Are You A Store Owner?</br>
+<input type ="text" id = "restaurantName" placeholder="Enter name of restaurant"> </br>
 <input type ="text" id = "address" placeholder="Enter your address"> </br>
-<input type="text" id = "message" placeholder="Enter your message"></br>
+<input type="text" id = "description" placeholder="Enter your  restaurant description"></br>
+<input type="int" id = "reservationAmount" placeholder="How many servings"></br>
 <button onclick="register()">Register</button>
 <script>
 
 	function register() {
-		if (document.getElementById('remember').checked) {
-            alert("checked");
+		if (document.getElementById('isOwner').checked) {
 			registerAddress()
         } else {
+			// alert("NOT CHECKED")
+			
             //preparing to send information over to the backend by organizing data into a data structure
 			var dict = {
 				'username': document.getElementById("username").value,
 				'password': document.getElementById('password').value,
 				'email': document.getElementById('email').value,
-				'checkUser': document.getElementById('checkUser').value,
-				'latitude': lat,
-				'longitude': lng,
-				'message': document.getElementById("message").value
+				'isOwner': false,
+				'latitude': null,
+				'longitude': null,
+				'description': null,
+				'address': null,
+				'reservationAmount': null,
+				'restaurantName': null
 			}; 
 			//this will post into flask, and because we posted through this method
 			//the backend will no longer be able to redirect pages 
@@ -47,6 +53,7 @@
 
 	//the script runs here since registeraddress is not found if created on a different file
 	function registerAddress() {
+		console.log("WORLD")
 		address = document.getElementById("address").value;
 
 		const geocoder = new google.maps.Geocoder();
@@ -63,10 +70,13 @@
 				'username': document.getElementById("username").value,
 				'password': document.getElementById('password').value,
 				'email': document.getElementById('email').value,
-				'checkUser': document.getElementById('checkUser').value,
+				'isOwner': true,
 				'latitude': lat,
 				'longitude': lng,
-				'message': document.getElementById("message").value
+				'description': document.getElementById("description").value,
+				'address': document.getElementById("address").value,
+				'reservationAmount': document.getElementById("reservationAmount").value,
+				'restaurantName': document.getElementById("restaurantName").value
 			}; 
 			//this will post into flask, and because we posted through this method
 			//the backend will no longer be able to redirect pages 
@@ -102,7 +112,7 @@
 
 
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places">
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

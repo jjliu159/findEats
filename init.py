@@ -28,11 +28,11 @@ app.secret_key = "random string"
 
 
 #alan
-conn = psycopg2.connect(host='localhost',
-                       port=5431,
-                       user='alanlu',
-                       password='chingchong',
-                       database='test',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5431,
+#                        user='alanlu',
+#                        password='chingchong',
+#                        database='test',)
 
 conn = psycopg2.connect(
         host="localhost",
@@ -68,8 +68,6 @@ def retrievePins():
     #stores the results in a variable
     data = cursor.fetchall()
     counter = 0
-    # for i in data:
-    #     if 
     print('data',data)
     dest = (lat, lng)
     responseData = []
@@ -82,6 +80,7 @@ def retrievePins():
                 "longitude":i[5],
                 "latitude":i[4]
             })
+    print("RESPONSE")
     print(responseData)
     # return Response(json.dumps(responseData), mimetype='text/json') 
     return render_template("map.html", stores = responseData)
@@ -128,10 +127,13 @@ def registerAuth(): #done
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        checkUser = request.form['checkUser']
+        isOwner = request.form['isOwner']
         latitude = request.form['latitude']
         longitude = request.form['longitude']
-        message = request.form['message']
+        description = request.form['description']
+        address = request.form['description']
+        reservationAmount = request.form['reservationAmount']
+        restaurantName = request.form['restaurantName']
 
 
         #cursor used to send queries
@@ -149,8 +151,13 @@ def registerAuth(): #done
             error = "This user already exists"
             return "failure"
         else:
-            ins = 'INSERT INTO person (userName, password, owner, latitude, longitude, message) VALUES(%s, %s, %s, %s, %s, %s)'
-            cursor.execute(ins,(username,password, checkUser, latitude, longitude,message))
+            if isOwner != "false":
+                ins = 'INSERT INTO person (username, password, email, isOwner, latitude, longitude, description, address, reservationAmount, restaurantName) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+                cursor.execute(ins,(username, password, email, True, latitude, longitude, description, address, reservationAmount, restaurantName))
+            else:
+                print
+                ins = 'INSERT INTO person (username, password, email, isOwner) VALUES(%s, %s, %s, %s)'
+                cursor.execute(ins,(username,password, email, False))
             conn.commit()
             cursor.close()
             return "success"
