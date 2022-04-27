@@ -1,5 +1,7 @@
+
+var map;
 function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
+  map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 40.76, lng: -73.983 },
     zoom: 15,
     mapTypeId: "terrain",
@@ -11,6 +13,7 @@ function initMap() {
           position: event.latLng,
           map: map,
       });
+      console.log(">>",event.latlng)
       console.log(event.latLng.toJSON())
       google.maps.event.removeListener(clickListener);
   });
@@ -21,7 +24,33 @@ function initMap() {
   // When user clicks submit-btn --> use geocode on the given address
   document.getElementById("submit-btn").addEventListener("click", () => {geocodeAddress(geocoder, map);
   });
-  
+}
+
+function displayPins(data){
+  // var mapCanvas = document.getElementById('map_canvas');
+  var location, marker;
+  console.log(typeof(data));
+  for (let i = 0; i < data.length; i++) {
+    console.log({lat: data[i]["latitude"], lng: data[i]["longitude"]});
+    console.log(map);
+    // location = new google.maps.LatLng(data[i]["latitude"],data[i]["longitude"]);
+    new google.maps.Marker({
+      position: {lat: data[i]["latitude"], lng: data[i]["longitude"]},
+      map: map,
+    });
+    // marker = new google.maps.Marker({position:location});
+    // marker.setMap(mapCanvas);
+  }
+}
+
+function sendCoord(lat, lng) {
+  var dict = {"Latitude" : lat, 
+                "Longitude" : lng,
+              };
+  $.post( "/getPins", dict,function(data, status){
+    console.log("Data: " + data.longitude + "\nStatus: " + status);
+    displayPins(JSON.parse(JSON.stringify(data)));
+  })
 }
 
 function geocodeAddress(geocoder, inputMap) {
@@ -29,10 +58,15 @@ function geocodeAddress(geocoder, inputMap) {
 
   // Search for the address with the API
   geocoder.geocode({ address: address }, (results, status) => {
-    if (status === "OK") {
-        // Display results
-        //console.log(results)
-        console.log(results[0].geometry.location);
+    if (status === google.maps.GeocoderStatus.OK) {
+        var lat = results[0].geometry.location.lat();
+        var lng = results[0].geometry.location.lng();
+        // Display Longitude and Latitude
+        console.log("CHECK")
+        console.log("LAT: ", lat)
+        console.log("LAT: ", lng)
+
+        sendCoord(lat, lng);
 
         // Set the location of the map obtained by the API
         inputMap.setCenter(results[0].geometry.location);

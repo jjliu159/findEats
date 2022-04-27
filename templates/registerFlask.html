@@ -1,0 +1,24 @@
+<html>
+<head>
+</head>
+<body>
+<form action="/registerAuth" method="POST">
+	<input type="text" name = "username" placeholder="username" required/> </br>
+	<input type="password" name = "password" placeholder="password" required/></br>
+	<input type="text" name = "email" placeholder="email" required/> </br>
+	<input type="checkbox" name = "checkUser" placeholder="checkUser" value="true" /> Store Owner?</br>
+	<input type="number" name ="latitude" placeholder="Enter latitude" step=any/> </br>
+	<input type="number" name ="longitude" placeholder="Enter longitude" step="any"/> </br>
+    <input type="text" name = "message" placeholder ="enter a message"> </br>
+	<input type="submit" value = Register />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+
+<a href="/">Go back</a>
+
+</body>
+
+
+</html>

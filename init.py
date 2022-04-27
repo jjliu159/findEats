@@ -1,11 +1,12 @@
 #Import Flask Library
 import json
-from flask import Flask, render_template, request, session, jsonify, url_for, redirect
+from flask import Flask, Response, render_template, request, session, jsonify, url_for, redirect
 # import pymysql.cursors
 import psycopg2
 import hashlib
 import psycopg2 
-
+import math
+from geopy.distance import geodesic
 
 
 
@@ -17,18 +18,28 @@ app.secret_key = "random string"
 
 
 #Configure MySQL
+
+
+conn = psycopg2.connect(host='localhost',
+                       port=5432,
+                       user='postgres',
+                       password='',
+                       database='findeats',)
+
+
+#alan
 # conn = psycopg2.connect(host='localhost',
 #                        port=5431,
 #                        user='alanlu',
 #                        password='chingchong',
-#                        db='test',)
+#                        database='test',)
 
-conn = psycopg2.connect(
-        host="localhost",
-        port = 5432,
-        database="postgres",
-        user="postgres",
-        password="")
+# conn = psycopg2.connect(
+#         host="localhost",
+#         port = 5432,
+#         database="postgres",
+#         user="postgres",
+#         password="")
 
 @app.route("/")
 def hello():
@@ -51,14 +62,30 @@ def retrievePins():
         lng = request.form['Longitude']
         print("LONGITUDE: ", lng)
     cursor = conn.cursor()
-    query = 'SELECT * FROM person'# WHERE owner = True;'
+    query = 'SELECT * FROM person WHERE owner = True;'
     # cursor.execute(query)
     cursor.execute('SELECT * FROM person')
     #stores the results in a variable
     data = cursor.fetchall()
+    counter = 0
+    # for i in data:
+    #     if 
     print('data',data)
+    dest = (lat, lng)
+    responseData = []
+    for i in data:
+        origin = (i[4] ,i[5])
+        
+        if geodesic(origin, dest).meters<5000:
+            responseData.append({
+                "message":i[1],
+                "longitude":i[5],
+                "latitude":i[4]
+            })
+    print(responseData)
+    return Response(json.dumps(responseData), mimetype='text/json') 
     
-    
+
 
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth(): #done
@@ -103,43 +130,29 @@ def registerAuth(): #done
         checkUser = request.form['checkUser']
         latitude = request.form['latitude']
         longitude = request.form['longitude']
+        message = request.form['message']
+
 
         #cursor used to send queries
         cursor = conn.cursor()
         #executes query
         query = 'SELECT * FROM person WHERE username = %s'
-        cursor.execute(query, (username))
+        cursor.execute(query,[username])
         #stores the results in a variable
         # data = cursor.fetchall()
         #use fetchall() if you are expecting more than 1 data row
         error = None
-        if checkUser == "true":
-            query = 'SELECT * FROM person WHERE username = %s'
-            cursor.execute(query,(username))
-            data = cursor.fetchall()
-            if data:
-                error = "This user already exists"
-                return render_template('register.html', error = error)
-            else:
-                ins = 'INSERT INTO person(userName, password, owner) VALUES(%s, %s, %s)'
-                cursor.execute(ins,(username,password,checkUser))
-                conn.commit()
-                cursor.close()
-                return render_template('index.html')
+        data = cursor.fetchall()
+
+        if data:
+            error = "This user already exists"
+            return "failure"
         else:
-            query = 'SELECT * FROM Users WHERE username = %s'
-            cursor.execute(query,(username))
-            data = cursor.fetchall()
-            if(data):
-                #If the previous query returns data, then user exists
-                error = "This user already exists"
-                return render_template('register.html', error = error)
-            else:
-                ins = 'INSERT INTO Users VALUES(%s, %s, %s,%s,%s)'
-                cursor.execute(ins, (username, password,latitude,longitude,email))
-                conn.commit()
-                cursor.close()
-                return render_template('index.html')
+            ins = 'INSERT INTO person (userName, password, owner, latitude, longitude, message) VALUES(%s, %s, %s, %s, %s, %s)'
+            cursor.execute(ins,(username,password, checkUser, latitude, longitude,message))
+            conn.commit()
+            cursor.close()
+            return "success"
     else:
         return render_template('register.html')
 
@@ -172,6 +185,13 @@ def registerAuth(): #done
 #         ]
 #     )
 #     return render_template('example.html', mymap=mymap, sndmap=sndmap)
+
+def getDistance(x1,y1,x2,y2):
+    return math.sqrt( ((x1-x2)**2)+((y1-y2)**2) )
+
+    
+    
+    
 
 if __name__ == "__main__":
     app.run('127.0.0.1', 5000, debug = False)
