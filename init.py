@@ -20,26 +20,26 @@ app.secret_key = "random string"
 #Configure MySQL
 
 
-conn = psycopg2.connect(host='localhost',
-                       port=5432,
-                       user='postgres',
-                       password='',
-                       database='findeats',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5432,
+#                        user='postgres',
+#                        password='',
+#                        database='findeats',)
 
 
 #alan
-# conn = psycopg2.connect(host='localhost',
-#                        port=5431,
-#                        user='alanlu',
-#                        password='chingchong',
-#                        database='test',)
+conn = psycopg2.connect(host='localhost',
+                       port=5431,
+                       user='alanlu',
+                       password='chingchong',
+                       database='test',)
 
-# conn = psycopg2.connect(
-#         host="localhost",
-#         port = 5432,
-#         database="postgres",
-#         user="postgres",
-#         password="")
+conn = psycopg2.connect(
+        host="localhost",
+        port = 5432,
+        database="postgres",
+        user="postgres",
+        password="")
 
 @app.route("/")
 def hello():
@@ -83,7 +83,8 @@ def retrievePins():
                 "latitude":i[4]
             })
     print(responseData)
-    return Response(json.dumps(responseData), mimetype='text/json') 
+    # return Response(json.dumps(responseData), mimetype='text/json') 
+    return render_template("map.html", stores = responseData)
     
 
 
@@ -110,7 +111,7 @@ def loginAuth(): #done
             session['username'] = username
             print("method: ",request.method)
             # return redirect(url_for('home'))
-            return render_template("map.html")
+            return render_template("map.html", stores = [1,2,3,4,5,8,9])
         except Exception as e:
             print(e)
             

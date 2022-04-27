@@ -47,7 +47,7 @@ function sendCoord(lat, lng) {
               };
   $.post( "/getPins", dict,function(data, status){
     console.log("Data: " + data.longitude + "\nStatus: " + status);
-    displayPins(JSON.parse(JSON.stringify(data)));
+    // displayPins(JSON.parse(JSON.stringify(data)));
   })
 }
 
