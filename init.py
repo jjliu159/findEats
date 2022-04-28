@@ -29,10 +29,10 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 
 #alan
 conn = psycopg2.connect(host='localhost',
-                       port=5431,
-                       user='alanlu',
-                       password='chingchong',
-                       database='test',)
+                       port=5432,
+                       user='postgres',
+                       password='Basicscats168!',
+                       database='findeats',)
 
 # conn = psycopg2.connect(
 #         host="localhost",
