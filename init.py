@@ -4,7 +4,7 @@ from flask import Flask, Response, render_template, request, session, jsonify, u
 # import pymysql.cursors
 import psycopg2
 import hashlib
-import psycopg2 
+# import psycopg2 
 import math
 from geopy.distance import geodesic
 

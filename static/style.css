@@ -4,7 +4,7 @@ body, html{
     font-family: sans-serif;
   }
 
-/*1ST PAGE ===================================================================*/
+/*index.html PAGE ===================================================================*/
 .mainPic{
     /* display: flex; */
     background-image: url('front_image.jpg');
@@ -19,26 +19,14 @@ body, html{
     font-size: 5vmin; */
 }
 
-.title{
-    display: flex;
-    width: 100%;
-    flex-direction:row;
-    /* flex-wrap: wrap; */
-    justify-content: center;
-    align-items: center;
-    font-size: 5vmin;
-    color: black;
-    margin-top: 150px;
-}
-
 .buttons{
     display: flex;
-    width: 100%;
-    flex-direction:row;
-    flex-wrap: wrap;
     justify-content: flex-end;
+    /* width: 100%;
+    flex-direction:row;
+    flex-wrap: wrap; */
     /* margin-top: 50px; */
-    /* align-items: center; */
+    align-items: center;
 }
 
 a.button1{
@@ -53,6 +41,7 @@ a.button1{
     color:#FFFFFF;
     background-color:#4eb5f1;
     transition: all 0.2s;
+    margin-top: 10px;
 }
 a.button1:hover{
     background-color:#4095c6;
@@ -62,4 +51,24 @@ a.button1:hover{
         display:block;
         margin:0.2em auto;
     }
+}
+
+.title{
+    display: flex;
+    /* width: 100%; */
+    /* flex-direction:row; */
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+    font-size: 5vmin;
+    color: black;
+    margin-top: 150px;
+}
+
+.content1{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 5%;
 }
