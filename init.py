@@ -58,12 +58,14 @@ def decrementCount():
     id = request.form['id']
     amount = request.form['count']
     amount = int(amount) - 1
-    # This updates description
-    # UPDATE person SET description = 'NEW DESCRIPTION' WHERE user_id = id;
+    # "UPDATE person SET description = 'NEW DESCRIPTION' WHERE user_id = id;"
+    # ^ This line above updates description with new description and id
     # psycopg2 doesn't use %d for int updates
     query = "UPDATE person SET reservationamount = %s WHERE user_id = %s;"
     cursor = conn.cursor()
     cursor.execute(query, (amount, id))
+    # need to commit the changes to SQL TABLE
+    conn.commit()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
     
 
