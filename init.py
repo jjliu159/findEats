@@ -7,8 +7,11 @@ import hashlib
 # import psycopg2 
 import math
 from geopy.distance import geodesic
+import hashlib
+from flask_login import LoginManager
+import flask_login
 
-
+login_manager = LoginManager()
 
 from datetime import datetime
 #Initialize the app from Flask
@@ -17,22 +20,23 @@ app = Flask(__name__, static_url_path ="", static_folder ="static")
 app.secret_key = "random string"
 app.config.update(TEMPLATES_AUTO_RELOAD = True)
 
+login_manager.init_app(app)
+
 #Configure MySQL
 
-
-# conn = psycopg2.connect(host='localhost',
-#                        port=5432,
-#                        user='postgres',
-#                        password='',
-#                        database='findeats',)
+conn = psycopg2.connect(host='localhost',
+                       port=5431,
+                       user='alanlu',
+                       password='',
+                       database='test',)
 
 
 #alan
-conn = psycopg2.connect(host='localhost',
-                       port=5432,
-                       user='postgres',
-                       password='Basicscats168!',
-                       database='findeats',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5432,
+#                        user='postgres',
+#                        password='Basicscats168!',
+#                        database='findeats',)
 
 # conn = psycopg2.connect(
 #         host="localhost",
@@ -41,7 +45,20 @@ conn = psycopg2.connect(host='localhost',
 #         user="postgres",
 #         password="")
 
+@login_manager.user_loader
+def load_user(user_id):
+    # return User.get(user_id)
+    cursor = conn.cursor()
+    query = 'SELECT * FROM person WHERE user_id = %s'
+    cursor.execute(query,user_id)
+    #stores the results in a variable
+    data = cursor.fetchone()
+    print(data)
+    return data
+
+
 @app.route("/")
+# @flask_login.login_required
 def hello():
     return render_template("index.html")
 
@@ -108,7 +125,7 @@ def loginAuth(): #done
     print('in loginauth')
     username = request.form['username']
     password = request.form['password']
-
+    password = hashlib.md5(password.encode()).hexdigest()
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
@@ -116,6 +133,7 @@ def loginAuth(): #done
     cursor.execute(query, (username, password))
     #stores the results in a variable
     data = cursor.fetchone()
+    # print(data)
     #use fetchall() if you are expecting more than 1 data row
     cursor.close()
     error = None
@@ -125,6 +143,7 @@ def loginAuth(): #done
         try:
             session['username'] = username
             print("method: ",request.method)
+            flask_login.login_user(data[0])
             # return redirect(url_for('home'))
             return render_template("map.html")
         except Exception as e:
@@ -142,6 +161,7 @@ def registerAuth(): #done
             #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
+        password = hashlib.md5(password.encode()).hexdigest()
         email = request.form['email']
         isOwner = request.form['isOwner']
         latitude = request.form['latitude']
