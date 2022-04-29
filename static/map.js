@@ -79,13 +79,18 @@ function geocodeAddress(geocoder, inputMap) {
 }
 
 function decrementCount(id){
-  console.log("ID: ",id)
+  // console.log("ID: ",id)
   var count;
   $.post( "/decrementCount", {"id":id},function(data, status){
     count=document.getElementById(id).innerHTML;
     count = count.slice(15);
-    console.log(">",(count),(parseInt(count)-1),"<");
+    // console.log(">",(count),(parseInt(count)-1),"<");
     document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count)-1);
+
+    var link = document.querySelectorAll('a[href="#"]');
+    console.log(link.style)
+    //link.style.display = 'none';
+
   })
 
 }
@@ -106,7 +111,7 @@ const displayStores = (array) => {
     <p class="mb-1" id = ${id} >Reserve Count: ${count}</p>
 
     <button onclick=decrementCount(${id})>Reserve Now</button>
-  </a>
+    </a>
     `;
 
     html += card

@@ -28,18 +28,18 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 
 
 #alan
-conn = psycopg2.connect(host='localhost',
-                       port=5431,
-                       user='alanlu',
-                       password='chingchong',
-                       database='test',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5431,
+#                        user='alanlu',
+#                        password='chingchong',
+#                        database='test',)
 
-# conn = psycopg2.connect(
-#         host="localhost",
-#         port = 5432,
-#         database="postgres",
-#         user="postgres",
-#         password="")
+conn = psycopg2.connect(
+        host="localhost",
+        port = 5432,
+        database="postgres",
+        user="postgres",
+        password="")
 
 @app.route("/")
 def hello():
@@ -52,6 +52,10 @@ def login():
 @app.route("/register")
 def register():
     return render_template("register.html")
+
+# @app.route("/confirmation")
+# def confirmation():
+#     return render_template("confirmation.html")
 
 @app.route("/decrementCount",methods=['POST'])
 def decrementCount():
@@ -147,7 +151,7 @@ def registerAuth(): #done
         latitude = request.form['latitude']
         longitude = request.form['longitude']
         description = request.form['description']
-        address = request.form['description']
+        address = request.form['address']
         reservationAmount = request.form['reservationAmount']
         restaurantName = request.form['restaurantName']
 
