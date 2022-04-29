@@ -1,3 +1,6 @@
+// global variable array
+var array;
+
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 40.76, lng: -73.983 },
@@ -48,7 +51,8 @@ function sendCoord(lat, lng) {
   $.post( "/getPins", dict,function(data, status){
     console.log("Data: " + data.longitude + "\nStatus: " + status);
     displayPins(JSON.parse(JSON.stringify(data)));
-    displayStores(JSON.parse(JSON.stringify(data)));
+    array = JSON.parse(JSON.stringify(data))
+    displayStores();
   })
 }
 
@@ -79,42 +83,42 @@ function geocodeAddress(geocoder, inputMap) {
 }
 
 function decrementCount(id){
-  // console.log("ID: ",id)
-  var count;
-  $.post( "/decrementCount", {"id":id},function(data, status){
-    count=document.getElementById(id).innerHTML;
-    count = count.slice(15);
-    // console.log(">",(count),(parseInt(count)-1),"<");
-    document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count)-1);
-
-    var link = document.querySelectorAll('a[href="#"]');
-    console.log(link.style)
-    //link.style.display = 'none';
-
+  count = array[id - 1]["count"]
+  $.post( "/decrementCount", {"id":id, "count":count}, function(data, status){
+    console.log("STATUS: ", status)
+    if (status == "success") {
+      count=document.getElementById(id).innerHTML;
+      count = count.slice(15);
+      console.log(">",(count),(parseInt(count)-1),"<");
+      document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count)-1);
+      array[id - 1]["count"] -= 1;
+      if (count <= "1") {
+        displayStores(array);
+      }
+    }
   })
 
 }
 
-const displayStores = (array) => {
+const displayStores = () => {
   let html = '';
   const table = document.getElementById("sidebar");
-  console.log(array);
   array.forEach(({ id, count,restName, restAddress, description}) => {
-    const card = `
-    <a href="#" class="list-group-item list-group-item-action">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">${restName}</h5>
-    </div>
-
-    <h6 class="mb-1">${restAddress}</h3>
-    <p class="mb-1" >${description} </p>
-    <p class="mb-1" id = ${id} >Reserve Count: ${count}</p>
-
-    <button onclick=decrementCount(${id})>Reserve Now</button>
+    if (count > 0) {
+      const card = `
+      <a href="#" class="list-group-item list-group-item-action">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">${restName}</h5>
+      </div>
+      <h6 class="mb-1">${restAddress}</h3>
+      <p class="mb-1" >${description} </p>
+      <p class="mb-1" id = ${id} >Reserve Count: ${count}</p>
+      <button onclick=decrementCount(${id})>Reserve Now</button>
     </a>
-    `;
-
-    html += card
+      `;
+      html += card
+    }
+    
   })
   table.innerHTML = html;
 }

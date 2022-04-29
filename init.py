@@ -4,7 +4,6 @@ from flask import Flask, Response, render_template, request, session, jsonify, u
 # import pymysql.cursors
 import psycopg2
 import hashlib
-import psycopg2 
 import math
 from geopy.distance import geodesic
 
@@ -53,17 +52,18 @@ def login():
 def register():
     return render_template("register.html")
 
-# @app.route("/confirmation")
-# def confirmation():
-#     return render_template("confirmation.html")
 
 @app.route("/decrementCount",methods=['POST'])
 def decrementCount():
-    print('herererere')
     id = request.form['id']
-    query = "UPDATE person SET reservationAmount = reservationAmount-1 WHERE user_id = %s;"
+    amount = request.form['count']
+    amount = int(amount) - 1
+    # This updates description
+    # UPDATE person SET description = 'NEW DESCRIPTION' WHERE user_id = id;
+    # psycopg2 doesn't use %d for int updates
+    query = "UPDATE person SET reservationamount = %s WHERE user_id = %s;"
     cursor = conn.cursor()
-    cursor.execute(query,id)
+    cursor.execute(query, (amount, id))
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
     
 

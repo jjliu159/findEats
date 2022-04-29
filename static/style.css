@@ -1,0 +1,74 @@
+body, html{
+    padding: 0px;
+    margin: 0px;
+    font-family: sans-serif;
+  }
+
+/*index.html PAGE ===================================================================*/
+.mainPic{
+    /* display: flex; */
+    background-image: url('front_image.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    height: 80vh;
+
+    /* justify-content: center;
+    align-items: center;
+    color: black;
+    font-size: 5vmin; */
+}
+
+.buttons{
+    display: flex;
+    justify-content: flex-end;
+    /* width: 100%;
+    flex-direction:row;
+    flex-wrap: wrap; */
+    /* margin-top: 50px; */
+    align-items: center;
+}
+
+a.button1{
+    display:inline-block;
+    padding:0.4em 1.2em;
+    margin:0 0.4em 0.3em 0;
+    border-radius:2em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-weight:300;
+    font-size: 3vmin;
+    color:#FFFFFF;
+    background-color:#4eb5f1;
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+a.button1:hover{
+    background-color:#4095c6;
+}
+@media all and (max-width:30em){
+    a.button1{
+        display:block;
+        margin:0.2em auto;
+    }
+}
+
+.title{
+    display: flex;
+    /* width: 100%; */
+    /* flex-direction:row; */
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+    font-size: 5vmin;
+    color: black;
+    margin-top: 150px;
+}
+
+.content1{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 5%;
+}
