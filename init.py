@@ -4,7 +4,6 @@ from flask import Flask, Response, render_template, request, session, jsonify, u
 # import pymysql.cursors
 import psycopg2
 import hashlib
-# import psycopg2 
 import math
 from geopy.distance import geodesic
 import hashlib
@@ -45,6 +44,20 @@ conn = psycopg2.connect(host='localhost',
 #         user="postgres",
 #         password="")
 
+#alan
+# conn = psycopg2.connect(host='localhost',
+#                        port=5431,
+#                        user='alanlu',
+#                        password='chingchong',
+#                        database='test',)
+
+conn = psycopg2.connect(
+        host="localhost",
+        port = 5432,
+        database="postgres",
+        user="postgres",
+        password="")
+
 @login_manager.user_loader
 def load_user(user_id):
     # return User.get(user_id)
@@ -70,16 +83,38 @@ def login():
 def register():
     return render_template("register.html")
 
-@app.route("/decrementCount",methods=['POST'])
+
+@app.route("/decrementCount", methods=['POST'])
 def decrementCount():
-    print('herererere')
     id = request.form['id']
-    query = "UPDATE person SET reservationAmount = reservationAmount-1 WHERE user_id = %s;"
+    amount = request.form['count']
+    amount = int(amount) - 1
+    # "UPDATE person SET email = 'NEW_EMAIL', password = 'NEW_PW', description = 'NEW DESCRIPTION' WHERE user_id = id;"
+    # query for owner
+    # UPDATE person SET email = 'NEW_EMAIL', password = 'NEW_PW' WHERE user_id = id
+    # query for customer
+    # psycopg2 doesn't use %d for int updates
+    query = "UPDATE person SET reservationamount = %s WHERE user_id = %s;"
     cursor = conn.cursor()
-    cursor.execute(query,id)
+    cursor.execute(query, (amount, id))
+    # need to commit the changes to SQL TABLE
+    conn.commit()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
     
+@app.route("/edit", methods = ['POST'])
+def editPage():
+    id = request.form['id']
+    restaurantName = request.form['restaurantName']
+    latitude = request.form['latitude']
+    longitude = request.form['longitude']
+    description = request.form['description']
+    reservationAmount = request.form['reservationAmount']
 
+    query = "UPDATE person SET restaurantName = %s, latitude = %s, longitude = %s, description = %s, address = %s, reservationAmount = %s WHERE user_id = %s;"
+    cursor = conn.cursor()
+    cursor.execute(query, (restaurantName, latitude, longitude, description, reservationAmount, id))
+    # need to commit the changes to SQL TABLE
+    conn.commit()
 
 @app.route("/getPins",methods=['POST'])
 def retrievePins():
@@ -167,7 +202,7 @@ def registerAuth(): #done
         latitude = request.form['latitude']
         longitude = request.form['longitude']
         description = request.form['description']
-        address = request.form['description']
+        address = request.form['address']
         reservationAmount = request.form['reservationAmount']
         restaurantName = request.form['restaurantName']
 
