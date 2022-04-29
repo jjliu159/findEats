@@ -53,13 +53,15 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/decrementCount",methods=['POST'])
+@app.route("/decrementCount", methods=['POST'])
 def decrementCount():
     id = request.form['id']
     amount = request.form['count']
     amount = int(amount) - 1
-    # "UPDATE person SET description = 'NEW DESCRIPTION' WHERE user_id = id;"
-    # ^ This line above updates description with new description and id
+    # "UPDATE person SET email = 'NEW_EMAIL', password = 'NEW_PW', description = 'NEW DESCRIPTION' WHERE user_id = id;"
+    # query for owner
+    # UPDATE person SET email = 'NEW_EMAIL', password = 'NEW_PW' WHERE user_id = id
+    # query for customer
     # psycopg2 doesn't use %d for int updates
     query = "UPDATE person SET reservationamount = %s WHERE user_id = %s;"
     cursor = conn.cursor()
@@ -68,7 +70,20 @@ def decrementCount():
     conn.commit()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
     
+@app.route("/edit", methods = ['POST'])
+def editPage():
+    id = request.form['id']
+    restaurantName = request.form['restaurantName']
+    latitude = request.form['latitude']
+    longitude = request.form['longitude']
+    description = request.form['description']
+    reservationAmount = request.form['reservationAmount']
 
+    query = "UPDATE person SET restaurantName = %s, latitude = %s, longitude = %s, description = %s, address = %s, reservationAmount = %s WHERE user_id = %s;"
+    cursor = conn.cursor()
+    cursor.execute(query, (restaurantName, latitude, longitude, description, reservationAmount, id))
+    # need to commit the changes to SQL TABLE
+    conn.commit()
 
 @app.route("/getPins",methods=['POST'])
 def retrievePins():
