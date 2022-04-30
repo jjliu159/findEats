@@ -4,11 +4,13 @@ from flask import Flask, Response, render_template, request, session, jsonify, u
 # import pymysql.cursors
 import psycopg2
 import hashlib
-# import psycopg2 
 import math
 from geopy.distance import geodesic
+import hashlib
+from flask_login import LoginManager
+import flask_login
 
-
+login_manager = LoginManager()
 
 from datetime import datetime
 #Initialize the app from Flask
@@ -17,22 +19,23 @@ app = Flask(__name__, static_url_path ="", static_folder ="static")
 app.secret_key = "random string"
 app.config.update(TEMPLATES_AUTO_RELOAD = True)
 
+# login_manager.init_app(app)
+
 #Configure MySQL
 
-
-# conn = psycopg2.connect(host='localhost',
-#                        port=5432,
-#                        user='postgres',
-#                        password='',
-#                        database='findeats',)
+conn = psycopg2.connect(host='localhost',
+                       port=5431,
+                       user='alanlu',
+                       password='',
+                       database='test',)
 
 
 #alan
-conn = psycopg2.connect(host='localhost',
-                       port=5432,
-                       user='postgres',
-                       password='Basicscats168!',
-                       database='findeats',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5432,
+#                        user='postgres',
+#                        password='Basicscats168!',
+#                        database='findeats',)
 
 # conn = psycopg2.connect(
 #         host="localhost",
@@ -41,7 +44,34 @@ conn = psycopg2.connect(host='localhost',
 #         user="postgres",
 #         password="")
 
+#alan
+# conn = psycopg2.connect(host='localhost',
+#                        port=5431,
+#                        user='alanlu',
+#                        password='chingchong',
+#                        database='test',)
+
+# conn = psycopg2.connect(
+#         host="localhost",
+#         port = 5432,
+#         database="postgres",
+#         user="postgres",
+#         password="")
+
+# @login_manager.user_loader
+# def load_user(user_id):
+#     # return User.get(user_id)
+#     cursor = conn.cursor()
+#     query = 'SELECT * FROM person WHERE user_id = %s'
+#     cursor.execute(query,user_id)
+#     #stores the results in a variable
+#     data = cursor.fetchone()
+#     print(data)
+#     return data
+
+
 @app.route("/")
+# @flask_login.login_required
 def hello():
     return render_template("index.html")
 
@@ -53,6 +83,7 @@ def login():
 def register():
     return render_template("register.html")
 
+<<<<<<< HEAD
 @app.route("/edit")
 def edit():
     curUser = session["username"]
@@ -71,12 +102,43 @@ def edit():
         return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
 
 @app.route("/decrementCount",methods=['POST'])
+=======
+
+@app.route("/decrementCount", methods=['POST'])
+>>>>>>> 82cd7aee83bb7e6237ecb9aae16f077f59cc7b17
 def decrementCount():
     id = request.form['id']
-    query = "UPDATE person SET reservationAmount = reservationAmount-1 WHERE user_id = %s;"
+    amount = request.form['count']
+    amount = int(amount) - 1
+    # "UPDATE person SET email = 'NEW_EMAIL', password = 'NEW_PW', description = 'NEW DESCRIPTION' WHERE user_id = id;"
+    # query for owner
+    # UPDATE person SET email = 'NEW_EMAIL', password = 'NEW_PW' WHERE user_id = id
+    # query for customer
+    # psycopg2 doesn't use %d for int updates
+    query = "UPDATE person SET reservationamount = %s WHERE user_id = %s;"
     cursor = conn.cursor()
-    cursor.execute(query,id)
+    cursor.execute(query, (amount, id))
+    # need to commit the changes to SQL TABLE
+    conn.commit()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+<<<<<<< HEAD
+=======
+    
+@app.route("/edit", methods = ['POST'])
+def editPage():
+    id = request.form['id']
+    restaurantName = request.form['restaurantName']
+    latitude = request.form['latitude']
+    longitude = request.form['longitude']
+    description = request.form['description']
+    reservationAmount = request.form['reservationAmount']
+
+    query = "UPDATE person SET restaurantName = %s, latitude = %s, longitude = %s, description = %s, address = %s, reservationAmount = %s WHERE user_id = %s;"
+    cursor = conn.cursor()
+    cursor.execute(query, (restaurantName, latitude, longitude, description, reservationAmount, id))
+    # need to commit the changes to SQL TABLE
+    conn.commit()
+>>>>>>> 82cd7aee83bb7e6237ecb9aae16f077f59cc7b17
 
 @app.route("/getPins",methods=['POST'])
 def retrievePins():
@@ -122,7 +184,7 @@ def loginAuth(): #done
     print('in loginauth')
     username = request.form['username']
     password = request.form['password']
-
+    password = hashlib.md5(password.encode()).hexdigest()
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
@@ -130,6 +192,7 @@ def loginAuth(): #done
     cursor.execute(query, (username, password))
     #stores the results in a variable
     data = cursor.fetchone()
+    # print(data)
     #use fetchall() if you are expecting more than 1 data row
     cursor.close()
     error = None
@@ -157,6 +220,7 @@ def registerAuth(): #done
         #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
+        password = hashlib.md5(password.encode()).hexdigest()
         email = request.form['email']
         isOwner = request.form['isOwner']
         latitude = request.form['latitude']
