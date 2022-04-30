@@ -50,12 +50,12 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 #                        password='chingchong',
 #                        database='test',)
 
-conn = psycopg2.connect(
-        host="localhost",
-        port = 5432,
-        database="postgres",
-        user="postgres",
-        password="")
+# conn = psycopg2.connect(
+#         host="localhost",
+#         port = 5432,
+#         database="postgres",
+#         user="postgres",
+#         password="")
 
 # @login_manager.user_loader
 # def load_user(user_id):
