@@ -36,6 +36,16 @@
                 <input type="int" class="form-control" placeholder="How many servings?"></br>
             </div>
 
+            <button onclick="register()" class="btn btn-primary">Register</button>
+        </div>
+    </div>
+    <script>
+        console.log('testsetst')
+        document.getElementById("restaurantName").style.visibility = "hidden"
+        document.getElementById("user_input_autocomplete_address").style.visibility = "hidden"
+        document.getElementById("description").style.visibility = "hidden"
+        document.getElementById("reservationAmount").style.visibility = "hidden"
+
         function isOwner() {
             // document.getElementById("username").style.visibility=""
             console.log('sahsflkjashflkshflkasjhflsdkfjhadslkfhasdlkhadsflkjasfhlkasfjhlkashsaklhfsap-ihsadfpkjsadfhp')
@@ -52,8 +62,10 @@
             }
         }
 
+
         function register() {
             if (document.getElementById('isOwner').checked) {
+				//if it's owner, then this will go to this function
                 registerAddress()
             } else {
                 //preparing to send information over to the backend by organizing data into a data structure

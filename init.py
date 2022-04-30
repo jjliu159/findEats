@@ -23,19 +23,19 @@ login_manager.init_app(app)
 
 #Configure MySQL
 
-conn = psycopg2.connect(host='localhost',
-                       port=5431,
-                       user='alanlu',
-                       password='',
-                       database='test',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5431,
+#                        user='alanlu',
+#                        password='',
+#                        database='test',)
 
 
 #alan
-# conn = psycopg2.connect(host='localhost',
-#                        port=5432,
-#                        user='postgres',
-#                        password='Basicscats168!',
-#                        database='findeats',)
+conn = psycopg2.connect(host='localhost',
+                       port=5432,
+                       user='',
+                       password='Basicscats168!',
+                       database='findeats',)
 
 # conn = psycopg2.connect(
 #         host="localhost",
@@ -156,12 +156,13 @@ def loginAuth(): #done
     print('in loginauth')
     username = request.form['username']
     password = request.form['password']
+    print(username,password)
     password = hashlib.md5(password.encode()).hexdigest()
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
     query = 'SELECT * FROM person WHERE username = %s and password = %s'
-    cursor.execute(query, (username, password))
+    cursor.execute(query, [username, password])
     #stores the results in a variable
     data = cursor.fetchone()
     # print(data)
@@ -174,7 +175,7 @@ def loginAuth(): #done
         try:
             session['username'] = username
             print("method: ",request.method)
-            flask_login.login_user(data[0])
+            # flask_lgin.login_user(data[0])
             # return redirect(url_for('home'))
             #session is used to store the username so that it can be accessed on a different html page
             session["username"] = request.form["username"]
