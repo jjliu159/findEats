@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Josefin+Sans:300,400);
+/* @import url(https://fonts.googleapis.com/css?family=Josefin+Sans:300,400); */
 
 html, body {
     padding: 0px;
@@ -480,3 +480,42 @@ titleAnimation {  0% {
     padding: 5%;
     margin-top: 200px;
 } */
+
+/* LOGIN PAGE ========================================================================*/
+
+.login_reg_header{
+    background-color: wheat;
+}
+
+.login_reg_header_title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4vmin;
+    color: black;
+    padding: 10px;
+    /* margin-top: 100px; */
+    letter-spacing: 4px;
+    /* border-color: wheat; */
+    /* border: 2px solid wheat; */
+    /* background-color: rgba(0, 0, 0, .7); */
+}
+
+.login_reg_header_title > h1{
+    margin-inline: 5px;;
+    font-family: serif;
+}
+
+.error{
+    display: flex;
+    justify-content: center;
+}
+
+.login_container{
+    margin-top: 100px;
+}
+
+.signin_login_form{
+    padding-left: 35%;
+    padding-right: 35%;
+}
