@@ -4,6 +4,7 @@
 </head>
 
 <body>
+    <div class="login_pic"> 
     <div class="login_reg_header"> 
         <div class="login_reg_header_title">
 			<h1>Find</h1> 
@@ -12,31 +13,33 @@
     </div>
     <div class="login_container">
         <div class="signin_login_form">
-            <form action="/loginAuth" method="POST">
+            <div class="actual_form_box"> 
+                <form action="/loginAuth" method="POST">
 
-                <div class="form-group">
-                    <label for="username">User Name</label>
-                    <input type="text" class="form-control" name="username" required/> </br>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" required/></br>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="form-control" value=Login />
-                </div>
-
+                    <div class="form-group">
+                        <label for="username">User Name</label>
+                        <input type="text" class="form-control" placeholder="Enter your user name" name="username" required/> </br>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter your password" name="password" required/></br>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="form-control" value="Sign In"/>
+                    </div>
+                    {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                    {% endif %}
+                </form>
+                <a href="/register" class="reg_in_login">Create your account</a>
+            </div>
         </div>
     </div>
 
 
-    {% if error %}
-    <p class="error"><strong>Error:</strong> {{error}}</p>
-    {% endif %}
-    </form>
     </div>
 
-
+    </div>
     <!-- <a href="/">Go back</a> -->
 
 </body>

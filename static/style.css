@@ -22,7 +22,6 @@ html, body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    opacity: auto !important;
 } 
 
 a.button1{
@@ -518,4 +517,30 @@ titleAnimation {  0% {
 .signin_login_form{
     padding-left: 35%;
     padding-right: 35%;
+}
+
+.login_pic{
+    background-image: url('login_image.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    /* opacity: 2; */
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.actual_form_box{
+    /* background-color: whitesmoke; */
+    border: 1px;
+    border-color: black;
+    padding: 30px;
+    background-color: #faeed9;
+    border-radius: 2em;
+}
+
+.reg_in_login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
