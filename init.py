@@ -56,18 +56,13 @@ def register():
 @app.route("/edit")
 def edit():
     curUser = session["username"]
-    print(curUser)
     cursor = conn.cursor()
     query = 'SElECT * FROM person WHERE username = %s'
     cursor.execute(query,[curUser])
     error = None
     data = cursor.fetchall()[0]
-    print(data)
     if data:
         userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount = data
-        print("username",username)
-        print("address",address)
-        print("description",description)
         return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
 
 @app.route("/decrementCount",methods=['POST'])
@@ -140,6 +135,7 @@ def loginAuth(): #done
             session['username'] = username
             print("method: ",request.method)
             # return redirect(url_for('home'))
+            #session is used to store the username so that it can be accessed on a different html page
             session["username"] = request.form["username"]
             return render_template("map.html",username = username)
         except Exception as e:
@@ -195,6 +191,7 @@ def registerAuth(): #done
     else:
         return render_template('register.html')
 
+#custom function to find the user from sql
 def findUser(username):
     print("WHERE IS THIS",username,type(username))
     cursor = conn.cursor()
@@ -210,7 +207,6 @@ def findUser(username):
 @app.route('/editRestaurantAuth',methods =['GET', 'POST'])
 def editRestaurantAuth():
     if request.method == 'POST':
-        print(request.form)
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
@@ -221,13 +217,11 @@ def editRestaurantAuth():
         address = request.form['address']
         reservationAmount = request.form['reservationAmount']
         restaurantName = request.form['restaurantName']      
-    
+
         cursor = conn.cursor()
-        findUser(username)
         update = "UPDATE person SET username = %s, password = %s, email = %s, isOwner = %s, restaurantName = %s, latitude = %s, longitude = %s, address = %s, description = %s, reservationAmount = %s WHERE username = %s"
         cursor.execute(update,(username, password, email, True, restaurantName, latitude, longitude, address, description, reservationAmount, username))
-        print("did it execute")
-        findUser(username)
+        conn.commit()
         cursor.close()
         return "success"
     
