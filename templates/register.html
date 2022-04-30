@@ -35,39 +35,6 @@
                 <input type="int" class="form-control" id="reservationAmount" placeholder="How many servings?"></br>
             </div>
 
-<<<<<<< HEAD
-	function register() {
-		if (document.getElementById('isOwner').checked) {
-			registerAddress()
-        } else {			
-            //preparing to send information over to the backend by organizing data into a data structure
-			var dict = {
-				'username': document.getElementById("username").value,
-				'password': document.getElementById('password').value,
-				'email': document.getElementById('email').value,
-				'isOwner': false,
-				'latitude': null,
-				'longitude': null,
-				'description': null,
-				'address': null,
-				'reservationAmount': null,
-				'restaurantName': null
-			}; 
-			//this will post into flask, and because we posted through this method
-			//the backend will no longer be able to redirect pages 
-			//the fix around is to have the backend send back a message to the frontend
-			//to let it know that it's time to switch pages
-			$.post("/registerAuth",dict, function(response){
-				if (response == "success"){
-					window.location.href = "/";
-				}
-				else{
-					alert("User already exists")
-				}
-			})
-        }
-	}
-=======
             <button onclick="register()" class="btn btn-primary">Register</button>
         </div>
     </div>
@@ -77,7 +44,6 @@
         document.getElementById("user_input_autocomplete_address").style.visibility = "hidden"
         document.getElementById("description").style.visibility = "hidden"
         document.getElementById("reservationAmount").style.visibility = "hidden"
->>>>>>> 82cd7aee83bb7e6237ecb9aae16f077f59cc7b17
 
         function isOwner() {
             // document.getElementById("username").style.visibility=""

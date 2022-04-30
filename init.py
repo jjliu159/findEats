@@ -24,10 +24,18 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 #Configure MySQL
 
 conn = psycopg2.connect(host='localhost',
-                       port=5431,
-                       user='alanlu',
+                       port=5432,
+                       user='',
                        password='',
-                       database='test',)
+                       database='findeats',)
+
+
+
+# conn = psycopg2.connect(host='localhost',
+#                        port=5431,
+#                        user='alanlu',
+#                        password='',
+#                        database='test',)
 
 
 #alan
@@ -83,29 +91,19 @@ def login():
 def register():
     return render_template("register.html")
 
-<<<<<<< HEAD
 @app.route("/edit")
 def edit():
     curUser = session["username"]
-    print(curUser)
     cursor = conn.cursor()
     query = 'SElECT * FROM person WHERE username = %s'
     cursor.execute(query,[curUser])
     error = None
     data = cursor.fetchall()[0]
-    print(data)
     if data:
         userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount = data
-        print("username",username)
-        print("address",address)
-        print("description",description)
         return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
 
 @app.route("/decrementCount",methods=['POST'])
-=======
-
-@app.route("/decrementCount", methods=['POST'])
->>>>>>> 82cd7aee83bb7e6237ecb9aae16f077f59cc7b17
 def decrementCount():
     id = request.form['id']
     amount = request.form['count']
@@ -121,24 +119,6 @@ def decrementCount():
     # need to commit the changes to SQL TABLE
     conn.commit()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
-<<<<<<< HEAD
-=======
-    
-@app.route("/edit", methods = ['POST'])
-def editPage():
-    id = request.form['id']
-    restaurantName = request.form['restaurantName']
-    latitude = request.form['latitude']
-    longitude = request.form['longitude']
-    description = request.form['description']
-    reservationAmount = request.form['reservationAmount']
-
-    query = "UPDATE person SET restaurantName = %s, latitude = %s, longitude = %s, description = %s, address = %s, reservationAmount = %s WHERE user_id = %s;"
-    cursor = conn.cursor()
-    cursor.execute(query, (restaurantName, latitude, longitude, description, reservationAmount, id))
-    # need to commit the changes to SQL TABLE
-    conn.commit()
->>>>>>> 82cd7aee83bb7e6237ecb9aae16f077f59cc7b17
 
 @app.route("/getPins",methods=['POST'])
 def retrievePins():
@@ -277,6 +257,7 @@ def editRestaurantAuth():
         print(request.form)
         username = request.form['username']
         password = request.form['password']
+        password = hashlib.md5(password.encode()).hexdigest()
         email = request.form['email']
         isOwner = request.form['isOwner']
         latitude = request.form['latitude']
@@ -287,11 +268,9 @@ def editRestaurantAuth():
         restaurantName = request.form['restaurantName']      
     
         cursor = conn.cursor()
-        findUser(username)
-        update = "UPDATE person SET username = %s, password = %s, email = %s, isOwner = %s, restaurantName = %s, latitude = %s, longitude = %s, address = %s, description = %s, reservationAmount = %s WHERE username = %s"
-        cursor.execute(update,(username, password, email, True, restaurantName, latitude, longitude, address, description, reservationAmount, username))
-        print("did it execute")
-        findUser(username)
+        update = "UPDATE person SET password = %s, email = %s, isOwner = %s, restaurantName = %s, latitude = %s, longitude = %s, address = %s, description = %s, reservationAmount = %s WHERE username = %s"
+        cursor.execute(update,(password, email, True, restaurantName, latitude, longitude, address, description, reservationAmount, username))
+        conn.commit()
         cursor.close()
         return "success"
     

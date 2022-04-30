@@ -7,16 +7,15 @@
 <!-- <script src="map.js"></script> -->
 
 
-{{address}} 
-
-<input type="text" id = "username" placeholder= {{username}}> Username </br>
-<input type="password" id = "password" placeholder="password" required/> Password</br>
-<input type="text" id = "email" placeholder= {{email}}> Email </br>
-<input type="checkbox" id = "isOwner" placeholder={{isOWner}}> Are You A Store Owner?</br>
-<input type ="text" id = "restaurantName" placeholder={{restaurantName}}> Restaurant Name</br>
-<input name ="user_input_autocomplete_address" id = "user_input_autocomplete_address" placeholder={{address}}> Address </br>
-<input type="text" id = "description" placeholder={{description}}>Description</br>
-<input type="int" id = "reservationAmount" placeholder= {{reservationAmount}}>Reservation Amount</br>
+<!--  -->
+<h1>Hi, {{username}} </h1>
+<input type="password" id = "password" value="password" required/> Password</br>
+<input type="text" id = "email" value= {{email}}> Email </br>
+<input type="checkbox" id = "isOwner" value={{isOWner}}> Are You A Store Owner?</br>
+<input type ="text" id = "restaurantName" value={{restaurantName}}> Restaurant Name</br>
+<input name ="user_input_autocomplete_address" id = "user_input_autocomplete_address" value={{address}}> Address </br>
+<input type="text" id = "description" value={{description}}>Description</br>
+<input type="int" id = "reservationAmount" value= {{reservationAmount}}>Reservation Amount</br>
 <button onclick="edit()">Edit</button>
 <script>
     function edit() {
@@ -31,7 +30,7 @@
 			console.log("LAT: ", lng)
 
             var dict = {
-                'username': document.getElementById("username").value,
+                'username': "{{username|safe}}",
                 'password': document.getElementById('password').value,
                 'email': document.getElementById('email').value,
                 'isOwner': document.getElementById('isOwner').value,
@@ -42,7 +41,6 @@
                 'reservationAmount': document.getElementById("reservationAmount").value,
                 'restaurantName': document.getElementById("restaurantName").value
             }; 
-            console.log("HUH",dict)
             $.post("editRestaurantAuth",dict,function(response){
                 if (response == "success"){
                     window.location.href = "/"
