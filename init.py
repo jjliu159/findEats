@@ -19,7 +19,7 @@ app = Flask(__name__, static_url_path ="", static_folder ="static")
 app.secret_key = "random string"
 app.config.update(TEMPLATES_AUTO_RELOAD = True)
 
-login_manager.init_app(app)
+# login_manager.init_app(app)
 
 #Configure MySQL
 
@@ -51,23 +51,23 @@ conn = psycopg2.connect(host='localhost',
 #                        password='chingchong',
 #                        database='test',)
 
-conn = psycopg2.connect(
-        host="localhost",
-        port = 5432,
-        database="postgres",
-        user="postgres",
-        password="")
+# conn = psycopg2.connect(
+#         host="localhost",
+#         port = 5432,
+#         database="postgres",
+#         user="postgres",
+#         password="")
 
-@login_manager.user_loader
-def load_user(user_id):
-    # return User.get(user_id)
-    cursor = conn.cursor()
-    query = 'SELECT * FROM person WHERE user_id = %s'
-    cursor.execute(query,user_id)
-    #stores the results in a variable
-    data = cursor.fetchone()
-    print(data)
-    return data
+# @login_manager.user_loader
+# def load_user(user_id):
+#     # return User.get(user_id)
+#     cursor = conn.cursor()
+#     query = 'SELECT * FROM person WHERE user_id = %s'
+#     cursor.execute(query,user_id)
+#     #stores the results in a variable
+#     data = cursor.fetchone()
+#     print(data)
+#     return data
 
 
 @app.route("/")
@@ -178,7 +178,6 @@ def loginAuth(): #done
         try:
             session['username'] = username
             print("method: ",request.method)
-            flask_login.login_user(data[0])
             # return redirect(url_for('home'))
             return render_template("map.html")
         except Exception as e:

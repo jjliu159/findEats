@@ -2,119 +2,112 @@
 var array;
 
 function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 40.76, lng: -73.983 },
-    zoom: 15,
-    mapTypeId: "terrain",
-  });
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 40.76, lng: -73.983 },
+        zoom: 15,
+        mapTypeId: "terrain",
+    });
 
-  map.setTilt(45);
-  var clickListener = google.maps.event.addListener(map, 'click', function (event) {
-      new google.maps.Marker({
-          position: event.latLng,
-          map: map,
-      });
-      console.log(">>",event.latlng)
-      console.log(event.latLng.toJSON())
-      google.maps.event.removeListener(clickListener);
-  });
-  
-  // Initialize the GeoCode API
-  const geocoder = new google.maps.Geocoder()
+    map.setTilt(45);
+    var clickListener = google.maps.event.addListener(map, 'click', function(event) {
+        new google.maps.Marker({
+            position: event.latLng,
+            map: map,
+        });
+        console.log(">>", event.latlng)
+        console.log(event.latLng.toJSON())
+        google.maps.event.removeListener(clickListener);
+    });
 
-  // When user clicks submit-btn --> use geocode on the given address
-  document.getElementById("submit-btn").addEventListener("click", () => {geocodeAddress(geocoder, map);
-  });
+    // Initialize the GeoCode API
+    const geocoder = new google.maps.Geocoder()
+
+    // When user clicks submit-btn --> use geocode on the given address
+    document.getElementById("submit-btn").addEventListener("click", () => {
+        geocodeAddress(geocoder, map);
+    });
 }
 
-function displayPins(data){
-  // var mapCanvas = document.getElementById('map_canvas');
-  var location, marker;
-  console.log(typeof(data));
-  for (let i = 0; i < data.length; i++) {
-    console.log({lat: data[i]["latitude"], lng: data[i]["longitude"]});
-    console.log(map);
-    // location = new google.maps.LatLng(data[i]["latitude"],data[i]["longitude"]);
-    new google.maps.Marker({
-      position: {lat: data[i]["latitude"], lng: data[i]["longitude"]},
-      map: map,
-    });
-    // marker = new google.maps.Marker({position:location});
-    // marker.setMap(mapCanvas);
-  }
+function displayPins(data) {
+    // var mapCanvas = document.getElementById('map_canvas');
+    var location, marker;
+    console.log(typeof(data));
+    for (let i = 0; i < data.length; i++) {
+        console.log({ lat: data[i]["latitude"], lng: data[i]["longitude"] });
+        console.log(map);
+        // location = new google.maps.LatLng(data[i]["latitude"],data[i]["longitude"]);
+        new google.maps.Marker({
+            position: { lat: data[i]["latitude"], lng: data[i]["longitude"] },
+            map: map,
+        });
+        // marker = new google.maps.Marker({position:location});
+        // marker.setMap(mapCanvas);
+    }
 }
 
 function sendCoord(lat, lng) {
-  var dict = {"Latitude" : lat, 
-                "Longitude" : lng,
-              };
-  $.post( "/getPins", dict,function(data, status){
-    console.log("Data: " + data.longitude + "\nStatus: " + status);
-    displayPins(JSON.parse(JSON.stringify(data)));
-    array = JSON.parse(JSON.stringify(data))
-    displayStores();
-  })
+    var dict = {
+        "Latitude": lat,
+        "Longitude": lng,
+    };
+    $.post("/getPins", dict, function(data, status) {
+        console.log("Data: " + data.longitude + "\nStatus: " + status);
+        displayPins(JSON.parse(JSON.stringify(data)));
+        array = JSON.parse(JSON.stringify(data))
+        displayStores();
+    })
 }
 
 function geocodeAddress(geocoder, inputMap) {
-  const address = document.getElementById("user_input_autocomplete_address").value;
+    const address = document.getElementById("user_input_autocomplete_address").value;
 
-  // Search for the address with the API
-  geocoder.geocode({ address: address }, (results, status) => {
-    if (status === google.maps.GeocoderStatus.OK) {
-        var lat = results[0].geometry.location.lat();
-        var lng = results[0].geometry.location.lng();
-        // Display Longitude and Latitude
+    // Search for the address with the API
+    geocoder.geocode({ address: address }, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+            var lat = results[0].geometry.location.lat();
+            var lng = results[0].geometry.location.lng();
+            // Display Longitude and Latitude
 
-        sendCoord(lat, lng);
+            sendCoord(lat, lng);
 
-        // Set the location of the map obtained by the API
-        inputMap.setCenter(results[0].geometry.location);
+            // Set the location of the map obtained by the API
+            inputMap.setCenter(results[0].geometry.location);
 
-        // Add the marker with the obtained location
-        new google.maps.Marker({
-            map: inputMap,
-            position: results[0].geometry.location,
-        });
-    } else {
-        alert("Geocode error: " + status);
-    }
-});
+            // Add the marker with the obtained location
+            new google.maps.Marker({
+                map: inputMap,
+                position: results[0].geometry.location,
+            });
+        } else {
+            alert("Geocode error: " + status);
+        }
+    });
 }
 
-function decrementCount(id){
-<<<<<<< HEAD
-  console.log("ID: ",id)
-  var count;
-  $.post( "/decrementCount", {"id":id},function(data, status){
-    count=document.getElementById(id).innerHTML;
-    count = count.slice(15);
-    document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count)-1);
-=======
-  count = array[id - 1]["count"]
-  $.post( "/decrementCount", {"id":id, "count":count}, function(data, status){
-    console.log("STATUS: ", status)
-    if (status == "success") {
-      count=document.getElementById(id).innerHTML;
-      count = count.slice(15);
-      console.log(">",(count),(parseInt(count)-1),"<");
-      document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count)-1);
-      array[id - 1]["count"] -= 1;
-      if (count <= "1") {
-        displayStores(array);
-      }
-    }
->>>>>>> b557c9e1be4b9191d875f8400b80d154f6c875aa
-  })
+function decrementCount(id) {
+    count = array[id - 1]["count"]
+    $.post("/decrementCount", { "id": id, "count": count }, function(data, status) {
+        console.log("STATUS: ", status)
+        if (status == "success") {
+            count = document.getElementById(id).innerHTML;
+            count = count.slice(15);
+            console.log(">", (count), (parseInt(count) - 1), "<");
+            document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count) - 1);
+            array[id - 1]["count"] -= 1;
+            if (count <= "1") {
+                displayStores(array);
+            }
+        }
+    })
 
 }
 
 const displayStores = () => {
-  let html = '';
-  const table = document.getElementById("sidebar");
-  array.forEach(({ id, count,restName, restAddress, description}) => {
-    if (count > 0) {
-      const card = `
+    let html = '';
+    const table = document.getElementById("sidebar");
+    array.forEach(({ id, count, restName, restAddress, description }) => {
+        if (count > 0) {
+            const card = `
       <a href="#" class="list-group-item list-group-item-action">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">${restName}</h5>
@@ -125,9 +118,9 @@ const displayStores = () => {
       <button onclick=decrementCount(${id})>Reserve Now</button>
     </a>
       `;
-      html += card
-    }
-    
-  })
-  table.innerHTML = html;
+            html += card
+        }
+
+    })
+    table.innerHTML = html;
 }
