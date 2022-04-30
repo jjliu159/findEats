@@ -53,16 +53,30 @@ def login():
 def register():
     return render_template("register.html")
 
+@app.route("/edit")
+def edit():
+    curUser = session["username"]
+    print(curUser)
+    cursor = conn.cursor()
+    query = 'SElECT * FROM person WHERE username = %s'
+    cursor.execute(query,[curUser])
+    error = None
+    data = cursor.fetchall()[0]
+    print(data)
+    if data:
+        userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount = data
+        print("username",username)
+        print("address",address)
+        print("description",description)
+        return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
+
 @app.route("/decrementCount",methods=['POST'])
 def decrementCount():
-    print('herererere')
     id = request.form['id']
     query = "UPDATE person SET reservationAmount = reservationAmount-1 WHERE user_id = %s;"
     cursor = conn.cursor()
     cursor.execute(query,id)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
-    
-
 
 @app.route("/getPins",methods=['POST'])
 def retrievePins():
@@ -126,7 +140,8 @@ def loginAuth(): #done
             session['username'] = username
             print("method: ",request.method)
             # return redirect(url_for('home'))
-            return render_template("map.html")
+            session["username"] = request.form["username"]
+            return render_template("map.html",username = username)
         except Exception as e:
             print(e)
             
@@ -139,7 +154,7 @@ def loginAuth(): #done
 @app.route('/registerAuth', methods=['GET', 'POST']) 
 def registerAuth(): #done
     if request.method == 'POST':
-            #grabs information from the forms
+        #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
@@ -147,7 +162,7 @@ def registerAuth(): #done
         latitude = request.form['latitude']
         longitude = request.form['longitude']
         description = request.form['description']
-        address = request.form['description']
+        address = request.form['address']
         reservationAmount = request.form['reservationAmount']
         restaurantName = request.form['restaurantName']
 
@@ -179,6 +194,43 @@ def registerAuth(): #done
             return "success"
     else:
         return render_template('register.html')
+
+def findUser(username):
+    print("WHERE IS THIS",username,type(username))
+    cursor = conn.cursor()
+    query = 'SELECT * FROM person WHERE username = %s'
+    cursor.execute(query,[username])
+    data = cursor.fetchall()
+    if data:
+        print(data)
+    else:
+        print("nonexistent")
+    cursor.close()
+
+@app.route('/editRestaurantAuth',methods =['GET', 'POST'])
+def editRestaurantAuth():
+    if request.method == 'POST':
+        print(request.form)
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        isOwner = request.form['isOwner']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        description = request.form['description']
+        address = request.form['address']
+        reservationAmount = request.form['reservationAmount']
+        restaurantName = request.form['restaurantName']      
+    
+        cursor = conn.cursor()
+        findUser(username)
+        update = "UPDATE person SET username = %s, password = %s, email = %s, isOwner = %s, restaurantName = %s, latitude = %s, longitude = %s, address = %s, description = %s, reservationAmount = %s WHERE username = %s"
+        cursor.execute(update,(username, password, email, True, restaurantName, latitude, longitude, address, description, reservationAmount, username))
+        print("did it execute")
+        findUser(username)
+        cursor.close()
+        return "success"
+    
 
 def getDistance(x1,y1,x2,y2):
     return math.sqrt( ((x1-x2)**2)+((y1-y2)**2) )

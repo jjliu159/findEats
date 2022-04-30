@@ -80,3 +80,16 @@ button:disabled {
   color: #c5d4f0;
   cursor: auto;
 }
+
+#editButton {
+  position:absolute;
+  font-size: large;
+  top:0;
+  right:2%;
+}
+
+#welcome{
+  position:absolute;
+  top:0;
+  right:50%;
+}

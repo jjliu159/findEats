@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+<!-- <script src="map.js"></script> -->
+
+
+{{address}} 
+
+<input type="text" id = "username" placeholder= {{username}}> Username </br>
+<input type="password" id = "password" placeholder="password" required/> Password</br>
+<input type="text" id = "email" placeholder= {{email}}> Email </br>
+<input type="checkbox" id = "isOwner" placeholder={{isOWner}}> Are You A Store Owner?</br>
+<input type ="text" id = "restaurantName" placeholder={{restaurantName}}> Restaurant Name</br>
+<input name ="user_input_autocomplete_address" id = "user_input_autocomplete_address" placeholder={{address}}> Address </br>
+<input type="text" id = "description" placeholder={{description}}>Description</br>
+<input type="int" id = "reservationAmount" placeholder= {{reservationAmount}}>Reservation Amount</br>
+<button onclick="edit()">Edit</button>
+<script>
+    function edit() {
+        address = document.getElementById("user_input_autocomplete_address").value;
+		const geocoder = new google.maps.Geocoder();
+		geocoder.geocode({ address: address }, (results, status) => {
+		if (status === google.maps.GeocoderStatus.OK) {
+			var lat = results[0].geometry.location.lat();
+			var lng = results[0].geometry.location.lng();
+			// Display Longitude and Latitude
+			console.log("LAT: ", lat)
+			console.log("LAT: ", lng)
+
+            var dict = {
+                'username': document.getElementById("username").value,
+                'password': document.getElementById('password').value,
+                'email': document.getElementById('email').value,
+                'isOwner': document.getElementById('isOwner').value,
+                'latitude': lat,
+                'longitude': lng,
+                'description': document.getElementById("description").value,
+                'address': address,
+                'reservationAmount': document.getElementById("reservationAmount").value,
+                'restaurantName': document.getElementById("restaurantName").value
+            }; 
+            console.log("HUH",dict)
+            $.post("editRestaurantAuth",dict,function(response){
+                if (response == "success"){
+                    window.location.href = "/"
+                }
+                else{
+                    alert("Checking")
+                }
+            })
+        }
+        else{
+            alert("Geocode was not successful for the following reason" + status);
+        }
+    });
+}
+</script>
+
+{% if error %}
+	<p class="error"><strong>Error:</strong> {{error}}</p>
+{% endif %}
+
+<a href="/">Go back</a>
+
+</body>
+
+</html>
+
+<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places"></script>
+
+<script type="text/javascript" src="autocomplete.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
