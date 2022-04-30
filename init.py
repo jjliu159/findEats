@@ -50,12 +50,12 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 #                        password='chingchong',
 #                        database='test',)
 
-# conn = psycopg2.connect(
-#         host="localhost",
-#         port = 5432,
-#         database="postgres",
-#         user="postgres",
-#         password="")
+conn = psycopg2.connect(
+        host="localhost",
+        port = 5432,
+        database="postgres",
+        user="postgres",
+        password="")
 
 # @login_manager.user_loader
 # def load_user(user_id):
@@ -100,7 +100,7 @@ def decrementCount():
     conn.commit()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
     
-@app.route("/edit", methods = ['POST'])
+@app.route("/editPage", methods = ['POST'])
 def editPage():
     id = request.form['id']
     restaurantName = request.form['restaurantName']
