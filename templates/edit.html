@@ -7,14 +7,15 @@
 <!-- <script src="map.js"></script> -->
 
 
-<!--  -->
+<!-- needs quotation marks in the (EXAMPLE HERE: "{{example}}") in order to display the full string vs
+ {{example}} which will not dispaly the full string-->
+
 <h1>Hi, {{username}} </h1>
 <input type="password" id = "password" value="password" required/> Password</br>
 <input type="text" id = "email" value= {{email}}> Email </br>
-<input type="checkbox" id = "isOwner" value={{isOWner}}> Are You A Store Owner?</br>
-<input type ="text" id = "restaurantName" value={{restaurantName}}> Restaurant Name</br>
-<input name ="user_input_autocomplete_address" id = "user_input_autocomplete_address" value={{address}}> Address </br>
-<input type="text" id = "description" value={{description}}>Description</br>
+<input type ="text" id = "restaurantName" value="{{restaurantName}}"> Restaurant Name</br>
+<input name ="user_input_autocomplete_address" id = "user_input_autocomplete_address" value="{{address}}"> Address </br>
+<input type="text" id = "description" value="{{description}}">Description</br>
 <input type="int" id = "reservationAmount" value= {{reservationAmount}}>Reservation Amount</br>
 <button onclick="edit()">Edit</button>
 <script>
@@ -33,7 +34,7 @@
                 'username': "{{username|safe}}",
                 'password': document.getElementById('password').value,
                 'email': document.getElementById('email').value,
-                'isOwner': document.getElementById('isOwner').value,
+                'isOwner': true,
                 'latitude': lat,
                 'longitude': lng,
                 'description': document.getElementById("description").value,
@@ -61,7 +62,15 @@
 	<p class="error"><strong>Error:</strong> {{error}}</p>
 {% endif %}
 
-<a href="/">Go back</a>
+<form action="/loginAuth" method = "POST">
+    <input type = 'hidden' name = 'username' id = 'username' value = {{username}}>
+    <input type = 'hidden' name = 'password' id = 'password' value = {{password}}>
+    <input type = 'hidden' name = 'fromEdit' id = 'fromEdit' value = True>
+    <input type = "submit" value ="go back">
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{error}}</p>
+    {% endif %}
+</form>
 
 </body>
 

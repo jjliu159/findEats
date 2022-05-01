@@ -33,8 +33,24 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 # conn = psycopg2.connect(host='localhost',
 #                        port=5432,
 #                        user='postgres',
-#                        password='Basicscats168!',
+#                        password='password',
 #                        database='findeats',)
+
+
+
+# conn = psycopg2.connect(host='localhost',
+#                        port=5431,
+#                        user='alanlu',
+#                        password='',
+#                        database='test',)
+
+
+# mandy
+conn = psycopg2.connect(host='localhost',
+                       port=5432,
+                       user='postgres',
+                       password='Basicscats168!',
+                       database='findeats',)
 
 # conn = psycopg2.connect(
 #         host="localhost",
@@ -92,7 +108,17 @@ def edit():
     data = cursor.fetchall()[0]
     if data:
         userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount = data
-        return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
+        if isOwner:
+            return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
+        else:
+            return render_template("editUser.html",username=username,password=password,email=email)
+
+#needed this specific function since JJ used flask's session storage earlier to pass on information from the map.html to the edit.html
+@app.route("/logOut")
+def logOut():
+    session.clear()
+    return render_template("index.html")
+
 
 @app.route("/decrementCount",methods=['POST'])
 def decrementCount():
@@ -149,13 +175,20 @@ def retrievePins():
     
 
 
+
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth(): #done
     #grabs information from the forms
-    print('in loginauth')
+    print('in loginauth',request.form,request.form['username'],len(request.form))
     username = request.form['username']
     password = request.form['password']
-    password = hashlib.md5(password.encode()).hexdigest()
+
+    #we have two incoming loginauth request, one from edit and one from regular sign in
+    #regular sign in length is 2, therefore we need to encode it
+    #if it's from edit, the password is already encoded and if it's already encoded it will be enconded once more
+    #and this won't match up with the database
+    if len(request.form) == 2:
+        password = hashlib.md5(password.encode()).hexdigest()
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
@@ -174,7 +207,6 @@ def loginAuth(): #done
             session['username'] = username
             print("method: ",request.method)
             # return redirect(url_for('home'))
-            session["username"] = request.form["username"]
             return render_template("map.html",username = username)
         except Exception as e:
             print(e)
@@ -246,25 +278,29 @@ def findUser(username):
 @app.route('/editRestaurantAuth',methods =['GET', 'POST'])
 def editRestaurantAuth():
     if request.method == 'POST':
-        print(request.form)
+        cursor = conn.cursor()
         username = request.form['username']
         password = request.form['password']
         password = hashlib.md5(password.encode()).hexdigest()
         email = request.form['email']
-        isOwner = request.form['isOwner']
-        latitude = request.form['latitude']
-        longitude = request.form['longitude']
-        description = request.form['description']
-        address = request.form['address']
-        reservationAmount = request.form['reservationAmount']
-        restaurantName = request.form['restaurantName']      
-    
-        cursor = conn.cursor()
-        update = "UPDATE person SET password = %s, email = %s, isOwner = %s, restaurantName = %s, latitude = %s, longitude = %s, address = %s, description = %s, reservationAmount = %s WHERE username = %s"
-        cursor.execute(update,(password, email, True, restaurantName, latitude, longitude, address, description, reservationAmount, username))
+        print(request.form['isOwner'])
+        if request.form['isOwner'] == 'true':
+            latitude = request.form['latitude']
+            longitude = request.form['longitude']
+            description = request.form['description']
+            address = request.form['address']
+            reservationAmount = request.form['reservationAmount']
+            restaurantName = request.form['restaurantName']      
+        
+            update = "UPDATE person SET password = %s, email = %s, isOwner = %s, restaurantName = %s, latitude = %s, longitude = %s, address = %s, description = %s, reservationAmount = %s WHERE username = %s"
+            cursor.execute(update,(password, email, True, restaurantName, latitude, longitude, address, description, reservationAmount, username))
+        else:
+            update = "UPDATE person SET password = %s, email = %s WHERE username = %s"
+            cursor.execute(update,(password,email,username))
+            print('did it go thru')
         conn.commit()
         cursor.close()
-        return "success"
+        return 'success'
     
 
 def getDistance(x1,y1,x2,y2):

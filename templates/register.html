@@ -5,39 +5,60 @@
 </head>
 
 <body>
-
-    <!-- <script src="map.js"></script> -->
-    <div class="container col-md-13 offset-md-3">
-        <div class="col-6 restaurant_form">
-            <div class="form-group">
-                <input type="text" class="form-control" id="username" placeholder="username" required/></br>
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" id="password" placeholder="password" required/></br>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="email" placeholder="email" required/> </br>
-            </div>
-            <div class="form-group">
-                Are You A Store Owner?
-                <input type="checkbox" class="form-control" id="isOwner" placeholder="isOwner" onclick=isOwner() /> </br>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="restaurantName" placeholder="Enter name of restaurant"> </br>
-            </div>
-            <div class="form-group">
-                <input name="user_input_autocomplete_address" class="form-control" id="user_input_autocomplete_address" placeholder="Enter your restaurant address"> </br>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="description" placeholder="Enter your restaurant description"></br>
-            </div>
-            <div class="form-group">
-                <input type="int" class="form-control" id="reservationAmount" placeholder="How many servings?"></br>
-            </div>
-
-            <button onclick="register()" class="btn btn-primary">Register</button>
+	<div class="reg_pic"> 
+    <div class="login_reg_header"> 
+        <div class="login_reg_header_title">
+			<h1>Find</h1> 
+			<h1>Eats</h1>
         </div>
     </div>
+
+    <!-- <script src="map.js"></script> -->
+    <div class="reg_container">
+        <div class="registering_form">
+			<div class="actual_form_box"> 
+				<div class="form-group">
+					<label for="username">User Name</label>
+					<input type="text" class="form-control" id="username" placeholder="Enter your user name" required/></br>
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="password" placeholder="Enter your password" required/></br>
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="text" class="form-control" id="email" placeholder="Enter your email address" required/> </br>
+				</div>
+				<!-- ===================================== -->
+				<div class="form-group">
+					Are You A Store Owner?
+					<input type="checkbox" class="form-control" id="isOwner" placeholder="isOwner" onclick=isOwner() /> </br>
+				</div>
+				<div class="form-group">
+					<label for="restaurantName">Restaurant Name</label>
+					<input type="text" class="form-control" id="restaurantName" placeholder="Enter the name your restaurant"> </br>
+				</div>
+				<div class="form-group">
+					<label for="user_input_autocomplete_address">Address</label>
+					<input name="user_input_autocomplete_address" class="form-control" id="user_input_autocomplete_address" placeholder="Enter your restaurant's address"> </br>
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					<input type="text" class="form-control" id="description" placeholder="Enter your restaurant's description"></br>
+				</div>
+				<div class="form-group">
+					<label for="reservationAmount">Number of Servings</label>
+					<input type="int" class="form-control" id="reservationAmount" placeholder="How many servings?"></br>
+				</div>
+
+				<button onclick="register()" class="btn btn-primary">Register</button>
+
+				<a href="/login" class="reg_in_login">Already have an account? Sign in here.</a>
+			</div>
+    	</div>
+
+	</div>
+	<!-- ===================================================================== -->
     <script>
         console.log('testsetst')
         document.getElementById("restaurantName").style.visibility = "hidden"
@@ -140,7 +161,7 @@
     <p class="error"><strong>Error:</strong> {{error}}</p>
     {% endif %}
 
-    <a href="/">Go back</a>
+    <!-- <a href="/">Go back</a> -->
 
 </body>
 
