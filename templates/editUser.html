@@ -11,22 +11,27 @@
  {{example}} which will not dispaly the full string-->
 
 <h1>Hi, {{username}} </h1>
-<input type="password" id = "password" value="password" required/> Password</br>
+<input type="password" id = "password" placeholder = "Enter a new password" required/> Password</br>
 <input type="text" id = "email" value= {{email}}> Email </br>
 <button onclick="edit()">Edit</button>
 <script>
     function edit() {
-        var dict = {
-                'username': "{{username|safe}}",
-                'password': document.getElementById('password').value,
-                'email': document.getElementById('email').value,
-                'isOwner': false
-        }; 
-        $.post("editRestaurantAuth",dict,function(response){
-            if (response == "success"){
-                window.location.href = "/"
-            }
-        })
+        if (document.getElementById('password').value.length == 0){
+            alert("Please enter a password")
+        } 
+        else{
+            var dict = {
+                    'username': "{{username|safe}}",
+                    'password': document.getElementById('password').value,
+                    'email': document.getElementById('email').value,
+                    'isOwner': false
+            }; 
+            $.post("editRestaurantAuth",dict,function(response){
+                if (response == "success"){
+                    window.location.href = "/"
+                }
+            })
+        }
 }
 </script>
 

@@ -11,10 +11,10 @@
  {{example}} which will not dispaly the full string-->
 
 <h1>Hi, {{username}} </h1>
-<input type="password" id = "password" value="password" required/> Password</br>
+<input type="password" id = "password" placeholder = "Enter a new password" required/> Password</br>
 <input type="text" id = "email" value= {{email}}> Email </br>
-<input type ="text" id = "restaurantName" value="{{restaurantName}}"> Restaurant Name</br>
-<input name ="user_input_autocomplete_address" id = "user_input_autocomplete_address" value="{{address}}"> Address </br>
+<input type="text" id = "restaurantName" value="{{restaurantName}}"> Restaurant Name</br>
+<input name="user_input_autocomplete_address" id = "user_input_autocomplete_address" value="{{address}}"> Address </br>
 <input type="text" id = "description" value="{{description}}">Description</br>
 <input type="int" id = "reservationAmount" value= {{reservationAmount}}>Reservation Amount</br>
 <button onclick="edit()">Edit</button>
@@ -30,26 +30,31 @@
 			console.log("LAT: ", lat)
 			console.log("LAT: ", lng)
 
-            var dict = {
-                'username': "{{username|safe}}",
-                'password': document.getElementById('password').value,
-                'email': document.getElementById('email').value,
-                'isOwner': true,
-                'latitude': lat,
-                'longitude': lng,
-                'description': document.getElementById("description").value,
-                'address': address,
-                'reservationAmount': document.getElementById("reservationAmount").value,
-                'restaurantName': document.getElementById("restaurantName").value
-            }; 
-            $.post("editRestaurantAuth",dict,function(response){
-                if (response == "success"){
-                    window.location.href = "/"
-                }
-                else{
-                    alert("Checking")
-                }
-            })
+            if (document.getElementById('password').value.length == 0){
+                alert("Please enter a password")
+            } 
+            else{
+                var dict = {
+                    'username': "{{username|safe}}",
+                    'password': document.getElementById('password').value,
+                    'email': document.getElementById('email').value,
+                    'isOwner': true,
+                    'latitude': lat,
+                    'longitude': lng,
+                    'description': document.getElementById("description").value,
+                    'address': address,
+                    'reservationAmount': document.getElementById("reservationAmount").value,
+                    'restaurantName': document.getElementById("restaurantName").value
+                }; 
+                $.post("editRestaurantAuth",dict,function(response){
+                    if (response == "success"){
+                        window.location.href = "/"
+                    }
+                    else{
+                        alert("Checking")
+                    }
+                })
+            }
         }
         else{
             alert("Geocode was not successful for the following reason" + status);

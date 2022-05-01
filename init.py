@@ -173,7 +173,6 @@ def retrievePins():
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth(): #done
     #grabs information from the forms
-    print('in loginauth',request.form,request.form['username'],len(request.form))
     username = request.form['username']
     password = request.form['password']
 
@@ -274,9 +273,10 @@ def editRestaurantAuth():
         cursor = conn.cursor()
         username = request.form['username']
         password = request.form['password']
+        print(password)
         password = hashlib.md5(password.encode()).hexdigest()
         email = request.form['email']
-        print(request.form['isOwner'])
+        print(email)
         if request.form['isOwner'] == 'true':
             latitude = request.form['latitude']
             longitude = request.form['longitude']
