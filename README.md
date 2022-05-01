@@ -39,8 +39,5 @@ reservationAmount INT
 
 INSERT INTO person(email,userName,password,isOwner, restaurantName, latitude, longitude, description, address, reservationAmount) VALUES ('alanlu1999@gmail.com','alan','loooo',True, 'McDonalds' ,40.731619616175706,-73.99907986879239, 'Best burgers','White House 69',100);
 
-
-INSERT INTO person(email,userName,password,isOwner, restaurantName, latitude, longitude, description, address, reservationAmount) VALUES ('alanlu1999@gmail.com','alan','loooo',True, 'BurgerKing' ,40.731719616175706,-73.99207986879239, 'Best burgers','The address',100);
-
 INSERT INTO person(userName, password, owner) VALUES ('alan','loooo',True);
 
