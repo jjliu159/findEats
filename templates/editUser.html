@@ -22,7 +22,7 @@
                 <label for="email">Email</label>
                 <input type="text" id = "email" value= {{email}}> </br>
             </div>
-            <button onclick="edit()">Edit</button>
+            <button id="editbutton" onclick="edit()">Submit Changes</button>
             <script>
                 function edit() {
                     if (document.getElementById('password').value.length == 0){
@@ -52,7 +52,7 @@
                     <input type = 'hidden' name = 'username' id = 'username' value = {{username}}>
                     <input type = 'hidden' name = 'password' id = 'password' value = {{password}}>
                     <input type = 'hidden' name = 'fromEdit' id = 'fromEdit' value = True>
-                    <input type = "submit" value ="Go back">
+                    <input id="usersubmitbutton" type = "submit" value ="Return to Map Page">
                     {% if error %}
                     <p class="error"><strong>Error:</strong> {{error}}</p>
                     {% endif %}

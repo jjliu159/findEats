@@ -23,11 +23,11 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 #Configure MySQL
 
 #jj
-conn = psycopg2.connect(host='localhost',
-                       port=5432,
-                       user='postgres',
-                       password='password',
-                       database='findeats',)
+# conn = psycopg2.connect(host='localhost',
+#                        port=5432,
+#                        user='postgres',
+#                        password='password',
+#                        database='findeats',)
 
 
 
@@ -39,11 +39,11 @@ conn = psycopg2.connect(host='localhost',
 
 
 #mandy
-# conn = psycopg2.connect(host='localhost',
-#                        port=5432,
-#                        user='postgres',
-#                        password='Basicscats168!',
-#                        database='findeats',)
+conn = psycopg2.connect(host='localhost',
+                       port=5432,
+                       user='postgres',
+                       password='Basicscats168!',
+                       database='findeats',)
 
 # conn = psycopg2.connect(
 #         host="localhost",
