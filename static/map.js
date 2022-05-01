@@ -85,8 +85,6 @@ function geocodeAddress(geocoder, inputMap) {
 }
 
 function decrementCount(id) {
-    console.log("TESTING THIS",array[id-1],id,array)
-
     curIndex = 0
     
     //find the correct index manually since it's mismatched improperly
@@ -95,6 +93,7 @@ function decrementCount(id) {
             curIndex = i;
         }
     }
+
     count = array[curIndex]["count"]
     $.post("/decrementCount", { "id": id, "count": count }, function(data, status) {
         console.log("STATUS: ", status)
@@ -111,12 +110,6 @@ function decrementCount(id) {
     })
 
 }
-
-// const displayStores = () => {
-//     let html = "";
-//     const table = document.getElementById("sidebar");
-//     $.post("/grabInfo",)
-// }
 
 const displayStores = () => {
     let html = '';

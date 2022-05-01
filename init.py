@@ -102,16 +102,19 @@ def edit():
     if data:
         userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount = data
         if isOwner:
+            cursor.close()
             return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
         else:
+            cursor.close()
             return render_template("editUser.html",username=username,password=password,email=email)
+
+    #should be able to find a user, since it's already logged, no else statement needed?
 
 #needed this specific function since JJ used flask's session storage earlier to pass on information from the map.html to the edit.html
 @app.route("/logOut")
 def logOut():
     session.clear()
     return render_template("index.html")
-
 
 @app.route("/decrementCount",methods=['POST'])
 def decrementCount():
@@ -128,6 +131,7 @@ def decrementCount():
     cursor.execute(query, (amount, id))
     # need to commit the changes to SQL TABLE
     conn.commit()
+    cursor.close()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 @app.route("/getPins",methods=['POST'])
@@ -164,6 +168,7 @@ def retrievePins():
             })
     print("rendering Map2")
     print(responseData)
+    cursor.close()
     return Response(json.dumps(responseData), mimetype='text/json') 
     
 
@@ -287,15 +292,12 @@ def editRestaurantAuth():
         else:
             update = "UPDATE person SET password = %s, email = %s WHERE username = %s"
             cursor.execute(update,(password,email,username))
-            print('did it go thru')
         conn.commit()
         cursor.close()
         return 'success'
     
-
 def getDistance(x1,y1,x2,y2):
     return math.sqrt( ((x1-x2)**2)+((y1-y2)**2) )
-
 
 if __name__ == "__main__":
     app.run('127.0.0.1', 5000, debug = False)
