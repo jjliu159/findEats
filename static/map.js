@@ -119,8 +119,11 @@ function decrementCount(id) {
           console.log(">", (count), (parseInt(count) - 1), "<");
           document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count) - 1);
           array[curIndex]["count"] -= 1;
+
+          // confirmation message of reservation
           alert("You have made a reservation at " + array[curIndex]["restName"] + 
-          ". Please provide your name and email upon arrival at " + array[curIndex]["restAddress"] + ".")
+          ". Please provide your username and email upon arrival at " + array[curIndex]["restAddress"] + ".")
+          
           if (count <= "1") {
               displayStores(array);
           }
