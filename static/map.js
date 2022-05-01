@@ -85,20 +85,20 @@ function geocodeAddress(geocoder, inputMap) {
 }
 
 function decrementCount(id) {
-    count = array[id - 1]["count"]
-    $.post("/decrementCount", { "id": id, "count": count }, function(data, status) {
-        console.log("STATUS: ", status)
-        if (status == "success") {
-            count = document.getElementById(id).innerHTML;
-            count = count.slice(15);
-            console.log(">", (count), (parseInt(count) - 1), "<");
-            document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count) - 1);
-            array[id - 1]["count"] -= 1;
-            if (count <= "1") {
-                displayStores(array);
-            }
-        }
-    })
+  count = array[id - 1]["count"]
+  $.post("/decrementCount", { "id": id, "count": count }, function(data, status) {
+      console.log("STATUS: ", status)
+      if (status == "success") {
+          count = document.getElementById(id).innerHTML;
+          count = count.slice(15);
+          console.log(">", (count), (parseInt(count) - 1), "<");
+          document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count) - 1);
+          array[id - 1]["count"] -= 1;
+          if (count <= "1") {
+              displayStores(array);
+          }
+      }
+  })
 
 }
 
