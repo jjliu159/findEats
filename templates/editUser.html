@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+<!-- <script src="map.js"></script> -->
+
+
+<!-- needs quotation marks in the (EXAMPLE HERE: "{{example}}") in order to display the full string vs
+ {{example}} which will not dispaly the full string-->
+
+<h1>Hi, {{username}} </h1>
+<input type="password" id = "password" value="password" required/> Password</br>
+<input type="text" id = "email" value= {{email}}> Email </br>
+<button onclick="edit()">Edit</button>
+<script>
+    function edit() {
+        var dict = {
+                'username': "{{username|safe}}",
+                'password': document.getElementById('password').value,
+                'email': document.getElementById('email').value,
+                'isOwner': false
+        }; 
+        $.post("editRestaurantAuth",dict,function(response){
+            if (response == "success"){
+                window.location.href = "/"
+            }
+        })
+}
+</script>
+
+{% if error %}
+	<p class="error"><strong>Error:</strong> {{error}}</p>
+{% endif %}
+
+<form action="/loginAuth" method = "POST">
+    <input type = 'hidden' name = 'username' id = 'username' value = {{username}}>
+    <input type = 'hidden' name = 'password' id = 'password' value = {{password}}>
+    <input type = 'hidden' name = 'fromEdit' id = 'fromEdit' value = True>
+    <input type = "submit" value ="go back">
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{error}}</p>
+    {% endif %}
+</form>
+
+</body>
+
+</html>
+
+<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places"></script>
+
+<script type="text/javascript" src="autocomplete.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
