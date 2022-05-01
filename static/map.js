@@ -1,5 +1,6 @@
 // global variable array
 var array;
+var markers = []
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
@@ -9,23 +10,34 @@ function initMap() {
     });
 
     map.setTilt(45);
-    var clickListener = google.maps.event.addListener(map, 'click', function(event) {
-        new google.maps.Marker({
-            position: event.latLng,
-            map: map,
-        });
-        console.log(">>", event.latlng)
-        console.log(event.latLng.toJSON())
-        google.maps.event.removeListener(clickListener);
-    });
+    // var clickListener = google.maps.event.addListener(map, 'click', function(event) {
+    //     new google.maps.Marker({
+    //         position: event.latLng,
+    //         map: map,
+    //     });
+    //     console.log(">>", event.latlng)
+    //     console.log(event.latLng.toJSON())
+    //     google.maps.event.removeListener(clickListener);
+    // });
 
     // Initialize the GeoCode API
     const geocoder = new google.maps.Geocoder()
 
     // When user clicks submit-btn --> use geocode on the given address
     document.getElementById("submit-btn").addEventListener("click", () => {
-        geocodeAddress(geocoder, map);
+      clearMarkers();
+      geocodeAddress(geocoder, map);  
     });
+    
+}
+
+function clearMarkers() {
+  // delete markers from map after every search
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+  // reset list of markers for map
+  markers = []
 }
 
 function displayPins(data) {
@@ -74,10 +86,14 @@ function geocodeAddress(geocoder, inputMap) {
             inputMap.setCenter(results[0].geometry.location);
 
             // Add the marker with the obtained location
-            new google.maps.Marker({
+            const marker = new google.maps.Marker({
                 map: inputMap,
                 position: results[0].geometry.location,
             });
+
+            // list of markers on the map
+            markers.push(marker)
+
         } else {
             alert("Geocode error: " + status);
         }
