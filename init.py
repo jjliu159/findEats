@@ -24,11 +24,11 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 #Configure MySQL
 
 #jj
-# conn = psycopg2.connect(host='localhost',
-#                        port=5432,
-#                        user='postgres',
-#                        password='password',
-#                        database='findeats',)
+conn = psycopg2.connect(host='localhost',
+                       port=5432,
+                       user='postgres',
+                       password='password',
+                       database='findeats',)
 
 
 
@@ -39,12 +39,12 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 #                        database='test',)
 
 
-# mandy
-conn = psycopg2.connect(host='localhost',
-                       port=5432,
-                       user='postgres',
-                       password='Basicscats168!',
-                       database='findeats',)
+#alan
+# conn = psycopg2.connect(host='localhost',
+#                        port=5432,
+#                        user='postgres',
+#                        password='Basicscats168!',
+#                        database='findeats',)
 
 # conn = psycopg2.connect(
 #         host="localhost",
@@ -273,10 +273,8 @@ def editRestaurantAuth():
         cursor = conn.cursor()
         username = request.form['username']
         password = request.form['password']
-        print(password)
         password = hashlib.md5(password.encode()).hexdigest()
         email = request.form['email']
-        print(email)
         if request.form['isOwner'] == 'true':
             latitude = request.form['latitude']
             longitude = request.form['longitude']
