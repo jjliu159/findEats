@@ -82,8 +82,19 @@ def login():
 def register():
     return render_template("register.html")
 
+@app.route("/edit")
+def edit():
+    curUser = session["username"]
+    cursor = conn.cursor()
+    query = 'SElECT * FROM person WHERE username = %s'
+    cursor.execute(query,[curUser])
+    error = None
+    data = cursor.fetchall()[0]
+    if data:
+        userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount = data
+        return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
 
-@app.route("/decrementCount", methods=['POST'])
+@app.route("/decrementCount",methods=['POST'])
 def decrementCount():
     id = request.form['id']
     amount = request.form['count']
@@ -99,21 +110,6 @@ def decrementCount():
     # need to commit the changes to SQL TABLE
     conn.commit()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
-    
-@app.route("/editPage", methods = ['POST'])
-def editPage():
-    id = request.form['id']
-    restaurantName = request.form['restaurantName']
-    latitude = request.form['latitude']
-    longitude = request.form['longitude']
-    description = request.form['description']
-    reservationAmount = request.form['reservationAmount']
-
-    query = "UPDATE person SET restaurantName = %s, latitude = %s, longitude = %s, description = %s, address = %s, reservationAmount = %s WHERE user_id = %s;"
-    cursor = conn.cursor()
-    cursor.execute(query, (restaurantName, latitude, longitude, description, reservationAmount, id))
-    # need to commit the changes to SQL TABLE
-    conn.commit()
 
 @app.route("/getPins",methods=['POST'])
 def retrievePins():
@@ -178,7 +174,8 @@ def loginAuth(): #done
             session['username'] = username
             print("method: ",request.method)
             # return redirect(url_for('home'))
-            return render_template("map.html")
+            session["username"] = request.form["username"]
+            return render_template("map.html",username = username)
         except Exception as e:
             print(e)
             
@@ -191,8 +188,7 @@ def loginAuth(): #done
 @app.route('/registerAuth', methods=['GET', 'POST']) 
 def registerAuth(): #done
     if request.method == 'POST':
-            #grabs information from the forms
-        print(request.form)
+        #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
         print(password)
@@ -234,6 +230,42 @@ def registerAuth(): #done
             return "success"
     else:
         return render_template('register.html')
+
+def findUser(username):
+    print("WHERE IS THIS",username,type(username))
+    cursor = conn.cursor()
+    query = 'SELECT * FROM person WHERE username = %s'
+    cursor.execute(query,[username])
+    data = cursor.fetchall()
+    if data:
+        print(data)
+    else:
+        print("nonexistent")
+    cursor.close()
+
+@app.route('/editRestaurantAuth',methods =['GET', 'POST'])
+def editRestaurantAuth():
+    if request.method == 'POST':
+        print(request.form)
+        username = request.form['username']
+        password = request.form['password']
+        password = hashlib.md5(password.encode()).hexdigest()
+        email = request.form['email']
+        isOwner = request.form['isOwner']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        description = request.form['description']
+        address = request.form['address']
+        reservationAmount = request.form['reservationAmount']
+        restaurantName = request.form['restaurantName']      
+    
+        cursor = conn.cursor()
+        update = "UPDATE person SET password = %s, email = %s, isOwner = %s, restaurantName = %s, latitude = %s, longitude = %s, address = %s, description = %s, reservationAmount = %s WHERE username = %s"
+        cursor.execute(update,(password, email, True, restaurantName, latitude, longitude, address, description, reservationAmount, username))
+        conn.commit()
+        cursor.close()
+        return "success"
+    
 
 def getDistance(x1,y1,x2,y2):
     return math.sqrt( ((x1-x2)**2)+((y1-y2)**2) )
