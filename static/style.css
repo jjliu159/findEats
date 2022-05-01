@@ -663,7 +663,7 @@ titleAnimation {  0% {
     border-radius: 2em;
     width: 300px;
 }
-#password, #email{
+.q1, .q2{
     width: 300px;
 }
 
