@@ -85,7 +85,17 @@ function geocodeAddress(geocoder, inputMap) {
 }
 
 function decrementCount(id) {
-    count = array[id - 1]["count"]
+    console.log("TESTING THIS",array[id-1],id,array)
+
+    curIndex = 0
+    
+    //find the correct index manually since it's mismatched improperly
+    for (let i = 0; i < array.length;i++){
+        if (array[i]["id"] == id){
+            curIndex = i;
+        }
+    }
+    count = array[curIndex]["count"]
     $.post("/decrementCount", { "id": id, "count": count }, function(data, status) {
         console.log("STATUS: ", status)
         if (status == "success") {
@@ -93,7 +103,7 @@ function decrementCount(id) {
             count = count.slice(15);
             console.log(">", (count), (parseInt(count) - 1), "<");
             document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count) - 1);
-            array[id - 1]["count"] -= 1;
+            array[curIndex]["count"] -= 1;
             if (count <= "1") {
                 displayStores(array);
             }
@@ -101,6 +111,12 @@ function decrementCount(id) {
     })
 
 }
+
+// const displayStores = () => {
+//     let html = "";
+//     const table = document.getElementById("sidebar");
+//     $.post("/grabInfo",)
+// }
 
 const displayStores = () => {
     let html = '';
