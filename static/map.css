@@ -5,7 +5,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 #container {
   height: 100%;
   display: flex;
@@ -65,10 +64,11 @@ button {
   padding: 1rem;
   flex-grow: 0;
   cursor: pointer;
-  background: #1a73e8;
-  font-size: 1.5rem;
-  color: white;
+  background: #faeed9;
+  font-size: 1.4rem;
+  color: black;
   border: none;
+  border-radius: 2em;
 }
 
 button:hover {
@@ -81,21 +81,82 @@ button:disabled {
   cursor: auto;
 }
 
-#editButton {
-  position:absolute;
-  font-size: large;
-  top:0;
-  right:4%;
+.floating_panel{
+  background-color: wheat;
+  padding: 1%;
+  display: flex;
+  justify-content: column;
+  /* align-content:center; */
+  font-family: serif;
 }
 
-#welcome{
-  position:absolute;
-  top:0;
-  right:50%;
+#user_input_autocomplete_address{
+  border-radius: 2em;
+  height: 40px;
+  width: 270px;
+  border-color: snow;
 }
 
-#logOut {
-  position: absolute;
-  top:0;
-  right:.5%;
+#submit-btn{
+  margin-left: 5px;
+  margin-top: 2px;
+  border-radius: 2em;
+  border-color: snow;
+  height: 35px;
+}
+
+#submit-btn:hover{
+  background-color: whitesmoke;
+}
+/* ======================================================= */
+.welcome{
+  display: flex;
+  justify-content: center;
+  margin-left: 210px;
+}
+
+.editButton {
+  margin-top: 10px;
+  margin-left: 370px;
+}
+
+.logOut {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.editButton1{
+  width: 100%;
+  padding: 0.7rem;
+  flex-grow: 0;
+  /* cursor: pointer; */
+  background-color: #f1f1f1;
+  font-size: 1.1rem;
+  color: black;
+  text-decoration: none;
+  border-color: snow;
+  border-radius: 2em;
+}
+
+.editButton1:hover{
+  text-decoration: none;
+  background-color: whitesmoke;
+}
+
+.logOut1{
+  width: 100%;
+  padding: 0.7rem;
+  flex-grow: 0;
+  /* cursor: pointer; */
+  background-color: #f1f1f1;
+  font-size: 1.1rem;
+  color: black;
+  text-decoration: none;
+  border-color: snow;
+  border-radius: 2em;
+}
+
+.logOut1:hover{
+  text-decoration: none;
+  background-color: whitesmoke;
 }

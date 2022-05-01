@@ -305,7 +305,7 @@ section {
     color: wheat;
 }
 .email{
-    margin-right: 1000px;
+    margin-right: 1050px;
 }
 
 /* ===================================================================================================== */
@@ -544,7 +544,7 @@ titleAnimation {  0% {
 }
 
 .login_reg_header_title > h1{
-    margin-inline: 5px;;
+    margin-inline: 5px;
     font-family: serif;
 }
 
@@ -609,4 +609,52 @@ titleAnimation {  0% {
 .registering_form{
     padding-left: 35%;
     padding-right: 35%;
+}
+
+/* Edit PAGE ========================================================================*/
+
+.editpagepicUser{
+    background-image: url('edituser.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    height: 100vh;
+    width: 100%;
+}
+
+.editpageheadertitleUser{
+    background-color: wheat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    /* padding: 10px; */
+    letter-spacing: 4px;
+    font-size: 2.5vmin;
+    font-family: serif;
+}
+
+.editpageheadertitleUser > h1{
+    margin-inline: 5px;
+    font-family: serif;
+    padding: none;
+}
+
+.editpageusercontent{
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.editpageusercontentActualform{
+    border: 1px;
+    border-color: black;
+    padding: 30px;
+    background-color: #faeed9;
+    border-radius: 2em;
+}
+
+.p1, .p2{
+    display: flex;
+    flex-direction: column;
 }

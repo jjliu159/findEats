@@ -1,53 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
-<!-- <script src="map.js"></script> -->
+<div class="editpagepicUser">
+    <div class="editpageheadertitleUser">
+        <h1>Find</h1> 
+        <h1>Eats</h1>
+    </div>  
+    
+    <div class="editpageusercontent">
+        <div class="editpageusercontentActualform">
+            <h1>Hello, {{username}} </h1>
+            <div class="p1">
+                <label for="password">Password</label>
+                <input type="password" id = "password" placeholder = "Enter a new password" required/></br>
+            </div>
+            <div class="p2">
+                <label for="email">Email</label>
+                <input type="text" id = "email" value= {{email}}> </br>
+            </div>
+            <button onclick="edit()">Edit</button>
+            <script>
+                function edit() {
+                    if (document.getElementById('password').value.length == 0){
+                        alert("Please enter a password")
+                    } 
+                    else{
+                        var dict = {
+                                'username': "{{username|safe}}",
+                                'password': document.getElementById('password').value,
+                                'email': document.getElementById('email').value,
+                                'isOwner': false
+                        }; 
+                        $.post("editRestaurantAuth",dict,function(response){
+                            if (response == "success"){
+                                window.location.href = "/"
+                            }
+                        })
+                    }
+            }
+            </script>
 
+                {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                {% endif %}
 
-<!-- needs quotation marks in the (EXAMPLE HERE: "{{example}}") in order to display the full string vs
- {{example}} which will not dispaly the full string-->
+                <form action="/loginAuth" method = "POST">
+                    <input type = 'hidden' name = 'username' id = 'username' value = {{username}}>
+                    <input type = 'hidden' name = 'password' id = 'password' value = {{password}}>
+                    <input type = 'hidden' name = 'fromEdit' id = 'fromEdit' value = True>
+                    <input type = "submit" value ="go back">
+                    {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                    {% endif %}
+                </form>
+                
+        </div>
+    </div>
 
-<h1>Hi, {{username}} </h1>
-<input type="password" id = "password" placeholder = "Enter a new password" required/> Password</br>
-<input type="text" id = "email" value= {{email}}> Email </br>
-<button onclick="edit()">Edit</button>
-<script>
-    function edit() {
-        if (document.getElementById('password').value.length == 0){
-            alert("Please enter a password")
-        } 
-        else{
-            var dict = {
-                    'username': "{{username|safe}}",
-                    'password': document.getElementById('password').value,
-                    'email': document.getElementById('email').value,
-                    'isOwner': false
-            }; 
-            $.post("editRestaurantAuth",dict,function(response){
-                if (response == "success"){
-                    window.location.href = "/"
-                }
-            })
-        }
-}
-</script>
-
-{% if error %}
-	<p class="error"><strong>Error:</strong> {{error}}</p>
-{% endif %}
-
-<form action="/loginAuth" method = "POST">
-    <input type = 'hidden' name = 'username' id = 'username' value = {{username}}>
-    <input type = 'hidden' name = 'password' id = 'password' value = {{password}}>
-    <input type = 'hidden' name = 'fromEdit' id = 'fromEdit' value = True>
-    <input type = "submit" value ="go back">
-    {% if error %}
-    <p class="error"><strong>Error:</strong> {{error}}</p>
-    {% endif %}
-</form>
+</div>
 
 </body>
 

@@ -11,10 +11,15 @@
 
 <body>
 
-    <div id="floating_panel">
-
-        <input id="user_input_autocomplete_address" name="user_input_autocomplete_address" placeholder="Enter Address" />
-        <input id="submit-btn" type="button" value="Search" />
+    <div class="floating_panel">
+        <div class="bar">
+          <input id="user_input_autocomplete_address" name="user_input_autocomplete_address" placeholder="Enter Address" />
+        </div>
+        <div class="search_button">
+          <input id="submit-btn" type="button" value="Search" />
+        </div>
+        <!-- <input id="user_input_autocomplete_address" name="user_input_autocomplete_address" placeholder="Enter Address" />
+        <input id="submit-btn" type="button" value="Search" /> -->
 
         <script>
             var input = document.getElementById("user_input_autocomplete_address");
@@ -28,38 +33,28 @@
             document.getElementById("submit-btn").click();
         </script>
 
+      <div class="welcome">
+        <h1>Welcome to Find Eats</h1>
+      </div>
+
+      <div class="editButton">
+        <a href ="/edit"  class = "editButton1"> Edit Page</a>
+      </div>
+
+      <div class ="logOut">
+        <a href ="/logOut" class = "logOut1"> Log Out </a>
+      </div>
     </div>
 
-    <div id="welcome">
-      Welcome {{username}}
-    </div>
-    <div id="editButton">
-      <a href ="/edit" class = "editButton">Edit</a>
-    </div>
 
-    <div id ="logOut">
-      <a href ="/logOut" class = "logOut"> Log Out</a>
-    </div>
-
-        
-
-
-    
     <div id="container">
-        <div id="sidebar">
-            <h2>Stores</h2>
-            <!-- {%for store in stores%}
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{store.restaurantname}}</h5>
-              </div>
-              <h6 class="mb-1">{{store.address}}</h3>
-              <p class="mb-1">{{store.description}}</p>
-            <small class="text-muted">Donec id elit non mi porta.</small>
-            </a>
-          {% endfor %} -->
-        </div>
-        <div id="map"></div>
+      <div id="sidebar">
+      </div>
+      <div id="map">
+
+
+
+      </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
