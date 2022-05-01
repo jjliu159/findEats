@@ -30,57 +30,23 @@
 					<input type="text" class="form-control" id="email" placeholder="Enter your email address" required/> </br>
 				</div>
 				<!-- ===================================== -->
-				<div class="form-group">
-					Are You A Store Owner?
-					<input type="checkbox" class="form-control" id="isOwner" placeholder="isOwner" onclick=isOwner() /> </br>
-				</div>
-				<div class="form-group">
-					<label for="restaurantName">Restaurant Name</label>
-					<input type="text" class="form-control" id="restaurantName" placeholder="Enter the name your restaurant"> </br>
-				</div>
-				<div class="form-group">
-					<label for="user_input_autocomplete_address">Address</label>
-					<input name="user_input_autocomplete_address" class="form-control" id="user_input_autocomplete_address" placeholder="Enter your restaurant's address"> </br>
-				</div>
-				<div class="form-group">
-					<label for="description">Description</label>
-					<input type="text" class="form-control" id="description" placeholder="Enter your restaurant's description"></br>
-				</div>
-				<div class="form-group">
-					<label for="reservationAmount">Number of Servings</label>
-					<input type="int" class="form-control" id="reservationAmount" placeholder="How many servings?"></br>
-				</div>
-
 				<button onclick="register()" class="btn btn-primary">Register</button>
-
+                <br>
 				<a href="/login" class="reg_in_login">Already have an account? Sign in here.</a>
+                <br>
+                <a href="/register2"> Are you are store owner? Register Here.</a>
 			</div>
     	</div>
 
 	</div>
 	<!-- ===================================================================== -->
     <script>
-        console.log('testsetst')
-        document.getElementById("restaurantName").style.visibility = "hidden"
-        document.getElementById("user_input_autocomplete_address").style.visibility = "hidden"
-        document.getElementById("description").style.visibility = "hidden"
-        document.getElementById("reservationAmount").style.visibility = "hidden"
+        // console.log('testsetst')
+        // document.getElementById("restaurantName").style.visibility = "hidden"
+        // document.getElementById("user_input_autocomplete_address").style.visibility = "hidden"
+        // document.getElementById("description").style.visibility = "hidden"
+        // document.getElementById("reservationAmount").style.visibility = "hidden"
 
-        function isOwner() {
-            // document.getElementById("username").style.visibility=""
-            console.log('sahsflkjashflkshflkasjhflsdkfjhadslkfhasdlkhadsflkjasfhlkasfjhlkashsaklhfsap-ihsadfpkjsadfhp')
-            if (!document.getElementById("isOwner").checked) {
-                document.getElementById("restaurantName").style.visibility = "hidden"
-                document.getElementById("user_input_autocomplete_address").style.visibility = "hidden"
-                document.getElementById("description").style.visibility = "hidden"
-                document.getElementById("reservationAmount").style.visibility = "hidden"
-            } else {
-                document.getElementById("restaurantName").style.visibility = "visible"
-                document.getElementById("user_input_autocomplete_address").style.visibility = "visible"
-                document.getElementById("description").style.visibility = "visible"
-                document.getElementById("reservationAmount").style.visibility = "visible"
-            }
-        }
 
         function register() {
             if (document.getElementById('isOwner').checked) {
@@ -177,6 +143,6 @@
 <!-- Include Google Maps JS API  -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="style1.css">
 <!-- Custom JS code to bind to Autocomplete API -->
 <script type="text/javascript" src="autocomplete.js"></script>

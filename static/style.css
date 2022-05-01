@@ -591,13 +591,11 @@ titleAnimation {  0% {
 /* REGISTER PAGE ========================================================================*/
 
 
-.reg_pic{
+/* .reg_pic{
     background-image: url('register.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center, center;
-    /* opacity: 2; */
-    /* height: 100vh; */
     width: 100%;
     background-color: rgba(0, 0, 0, .5);
 }
@@ -609,7 +607,7 @@ titleAnimation {  0% {
 .registering_form{
     padding-left: 35%;
     padding-right: 35%;
-}
+} */
 
 /* Edit PAGE ========================================================================*/
 

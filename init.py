@@ -119,6 +119,9 @@ def logOut():
     session.clear()
     return render_template("index.html")
 
+@app.route("/register2")
+def register2():
+    return render_template("register2.html")
 
 @app.route("/decrementCount",methods=['POST'])
 def decrementCount():
