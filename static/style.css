@@ -81,7 +81,8 @@ section {
     font-family: arial;
     display: table-cell;
     text-align: center;
-    vertical-align: middle;
+    /* vertical-align: middle; */
+    line-height: 30px;
   }
   
   .scroll-down {
@@ -194,25 +195,39 @@ section {
 .content2{
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    padding: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
     background-color: #faeed9;
 } 
 
-.content2 > h1{
-    font-size: 5rem;
+.fwdes > h1{
+    font-size: 3rem;
+    text-align: right;
 }
 
-.content3{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    padding: 5%;
-    color: white;
-    background-color: black;
-} 
+.fwdes{
+    margin-right: 30px;
+    margin-bottom: 50px;
+}
+.fwdes > p{
+    text-align: right;
+}
+
+.fwpic{
+    margin-bottom: 50px;
+}
+
+.resize {
+    width: 800px;
+    height: auto;
+}
+
+/* .resize:hover{
+    transform: scale(1.05);
+    opacity: 0.3;
+} */
 
 .heading{
     display: flex;
@@ -239,9 +254,9 @@ section {
 #content1{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 1vmin;
+    grid-column-gap: 4vmin;
     grid-row-gap: 1vmin;
-    padding: 7vmin;
+    padding: 10vmin;
     font-size: 1rem;
     position: relative;
     bottom: 100px;
@@ -260,9 +275,37 @@ section {
     object-fit: cover;
 }
 
-.image:hover{
+/* .image:hover{
     transform: scale(1.2);
     opacity: 0.3;
+} */
+
+.content3{
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    /* align-items: right; */
+    padding: 5%;
+    /* color: white; */
+    background-color: rgb(26, 25, 25);
+} 
+
+.bottom_txt{
+    display: flex;
+    justify-content: flex-end;
+    text-decoration: none;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.bottom_txt2{
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid wheat;
+    color: wheat;
+}
+.email{
+    margin-right: 1000px;
 }
 
 /* ===================================================================================================== */
