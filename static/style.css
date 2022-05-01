@@ -654,17 +654,30 @@ titleAnimation {  0% {
     border-radius: 2em;
 }
 
-.p1, .p2{
+.p1, .p2, .p3, .p4, .p5, .p6{
     display: flex;
     flex-direction: column;
 }
 
-#password, #email, #editbutton, #usersubmitbutton{
+#editbutton, #usersubmitbutton{
     border-radius: 2em;
+    width: 300px;
+}
+#password, #email{
     width: 300px;
 }
 
 #editbutton{
     margin-top: 10px;
     margin-bottom: 50px;
+}
+/* EDIT OWNER PAGE ==================================================================*/
+
+.editpagepiconwer{
+    background-image: url('editOwnerPage.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    /* height: 100vh; */
+    width: 100%;
 }
