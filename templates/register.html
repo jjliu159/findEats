@@ -49,79 +49,33 @@
 
 
         function register() {
-            if (document.getElementById('isOwner').checked) {
-                registerAddress()
-            } else {
-                //preparing to send information over to the backend by organizing data into a data structure
-                var dict = {
-                    'username': document.getElementById("username").value,
-                    'password': document.getElementById('password').value,
-                    'email': document.getElementById('email').value,
-                    'isOwner': false,
-                    'latitude': null,
-                    'longitude': null,
-                    'description': null,
-                    'address': null,
-                    'reservationAmount': null,
-                    'restaurantName': null
-                };
-                //this will post into flask, and because we posted through this method
-                //the backend will no longer be able to redirect pages 
-                //the fix around is to have the backend send back a message to the frontend
-                //to let it know that it's time to switch pages
-                $.post("/registerAuth", dict, function(response) {
-                    if (response == "success") {
-                        window.location.href = "/";
-                    } else {
-                        alert("User already exists")
-                    }
-                })
-            }
+            //preparing to send information over to the backend by organizing data into a data structure
+            var dict = {
+                'username': document.getElementById("username").value,
+                'password': document.getElementById('password').value,
+                'email': document.getElementById('email').value,
+                'isOwner': false,
+                'latitude': null,
+                'longitude': null,
+                'description': null,
+                'address': null,
+                'reservationAmount': null,
+                'restaurantName': null
+            };
+            //this will post into flask, and because we posted through this method
+            //the backend will no longer be able to redirect pages 
+            //the fix around is to have the backend send back a message to the frontend
+            //to let it know that it's time to switch pages
+            $.post("/registerAuth", dict, function(response) {
+                if (response == "success") {
+                    window.location.href = "/";
+                } else {
+                    alert("User already exists")
+                }
+            })
         }
 
         //the script runs here since registeraddress is not found if created on a different file
-        function registerAddress() {
-            address = document.getElementById("user_input_autocomplete_address").value;
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({
-                address: address
-            }, (results, status) => {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    var lat = results[0].geometry.location.lat();
-                    var lng = results[0].geometry.location.lng();
-                    // Display Longitude and Latitude
-                    console.log("LAT: ", lat)
-                    console.log("LAT: ", lng)
-
-                    //preparing to send information over to the backend by organizing data into a data structure
-                    var dict = {
-                        'username': document.getElementById("username").value,
-                        'password': document.getElementById('password').value,
-                        'email': document.getElementById('email').value,
-                        'isOwner': true,
-                        'latitude': lat,
-                        'longitude': lng,
-                        'description': document.getElementById("description").value,
-                        'address': address,
-                        'reservationAmount': document.getElementById("reservationAmount").value,
-                        'restaurantName': document.getElementById("restaurantName").value
-                    };
-                    //this will post into flask, and because we posted through this method
-                    //the backend will no longer be able to redirect pages 
-                    //the fix around is to have the backend send back a message to the frontend
-                    //to let it know that it's time to switch pages
-                    $.post("/registerAuth", dict, function(response) {
-                        if (response == "success") {
-                            window.location.href = "/";
-                        } else {
-                            alert("User already exists")
-                        }
-                    })
-                } else {
-                    alert("Geocode was not successful for the following reason" + status);
-                }
-            });
-        }
     </script>
     {% if error %}
     <p class="error"><strong>Error:</strong> {{error}}</p>
