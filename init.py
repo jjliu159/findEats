@@ -99,13 +99,12 @@ def edit():
     cursor = conn.cursor()
     query = 'SElECT * FROM person WHERE username = %s'
     cursor.execute(query,[curUser])
-    error = None
     data = cursor.fetchall()[0]
     if data:
         userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount,code = data
         if isOwner:
             cursor.close()
-            return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
+            return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount,code = code)
         else:
             cursor.close()
             return render_template("editUser.html",username=username,password=password,email=email)
@@ -241,6 +240,8 @@ def registerAuth(): #done
             return "failure"
         else:
             if isOwner != "false":
+
+                #the function below is to generate a 10 char random upper and digit code
                 code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
                 ins = 'INSERT INTO person (username, password, email, isOwner, latitude, longitude, description, address, reservationAmount, restaurantName,code) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)'
                 cursor.execute(ins,(username, password, email, True, latitude, longitude, description, address, reservationAmount, restaurantName,code))
