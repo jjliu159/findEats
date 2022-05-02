@@ -122,7 +122,8 @@ function decrementCount(id) {
 
           // confirmation message of reservation
           alert("You have made a reservation at " + array[curIndex]["restName"] + 
-          ". Please provide your username and email upon arrival at " + array[curIndex]["restAddress"] + ".")
+          ". Please provide your username and email upon arrival at " + array[curIndex]["restAddress"] + "."
+          + " As well as this special code: " + array[curIndex]['code'])
           
           if (count <= "1") {
               displayStores(array);

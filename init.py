@@ -8,6 +8,8 @@ import math
 from geopy.distance import geodesic
 from flask_login import LoginManager
 import flask_login
+import random
+import string
 
 login_manager = LoginManager()
 
@@ -37,12 +39,12 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 #                        database='findeats',)
 
 
-
-# conn = psycopg2.connect(host='localhost',
-#                        port=5431,
-#                        user='alanlu',
-#                        password='',
-#                        database='test',)
+#jj
+conn = psycopg2.connect(host='localhost',
+                       port=5432,
+                       user='postgres',
+                       password='password',
+                       database='findeats',)
 
 
 # mandy
@@ -66,12 +68,12 @@ app.config.update(TEMPLATES_AUTO_RELOAD = True)
 #                        password='chingchong',
 #                        database='test',)
 
-conn = psycopg2.connect(
-        host="localhost",
-        port = 5432,
-        database="postgres",
-        user="postgres",
-        password="")
+# conn = psycopg2.connect(
+#         host="localhost",
+#         port = 5432,
+#         database="postgres",
+#         user="postgres",
+#         password="")
 
 # @login_manager.user_loader
 # def load_user(user_id):
@@ -154,10 +156,9 @@ def retrievePins():
     #stores the results in a variable
     data = cursor.fetchall()
     counter = 0
-    print('data',data)
+    print('WHERE IS THIS data',data)
     dest = (lat, lng)
     responseData = []
-    
     for i in data:
         print(i)
         origin = (i[6] ,i[7])
@@ -170,7 +171,8 @@ def retrievePins():
                 "restName":i[5],
                 "restAddress":i[9],
                 "count":i[10],
-                "id":i[0]
+                "id":i[0],
+                "code":i[11]
             })
     print("rendering Map2")
     print(responseData)
@@ -254,8 +256,9 @@ def registerAuth(): #done
             return "failure"
         else:
             if isOwner != "false":
-                ins = 'INSERT INTO person (username, password, email, isOwner, latitude, longitude, description, address, reservationAmount, restaurantName) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
-                cursor.execute(ins,(username, password, email, True, latitude, longitude, description, address, reservationAmount, restaurantName))
+                code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+                ins = 'INSERT INTO person (username, password, email, isOwner, latitude, longitude, description, address, reservationAmount, restaurantName,code) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)'
+                cursor.execute(ins,(username, password, email, True, latitude, longitude, description, address, reservationAmount, restaurantName,code))
             else:
                 print
                 ins = 'INSERT INTO person (username, password, email, isOwner) VALUES(%s, %s, %s, %s)'
