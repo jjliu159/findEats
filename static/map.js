@@ -111,7 +111,6 @@ function decrementCount(id) {
       if (status == "success") {
           count = document.getElementById(id).innerHTML;
           count = count.slice(15);
-          console.log(">", (count), (parseInt(count) - 1), "<");
           document.getElementById(id).innerHTML = "Reserve Count: " + (parseInt(count) - 1);
           array[curIndex]["count"] -= 1;
 
