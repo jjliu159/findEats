@@ -68,13 +68,6 @@ conn = psycopg2.connect(host='localhost',
 #                        password='chingchong',
 #                        database='test',)
 
-# conn = psycopg2.connect(
-#         host="localhost",
-#         port = 5432,
-#         database="postgres",
-#         user="postgres",
-#         password="")
-
 # @login_manager.user_loader
 # def load_user(user_id):
 #     # return User.get(user_id)
@@ -109,10 +102,12 @@ def edit():
     error = None
     data = cursor.fetchall()[0]
     if data:
-        userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount = data
+        userID,email,username,password,isOwner, restaurantName, latitude,longitude,description,address,reservationAmount,code = data
         if isOwner:
+            cursor.close()
             return render_template("edit.html", username=username,password=password,email = email, isOwner=isOwner,restaurantName=restaurantName,description=description,address=address,reservationAmount=reservationAmount)
         else:
+            cursor.close()
             return render_template("editUser.html",username=username,password=password,email=email)
 
 #needed this specific function since JJ used flask's session storage earlier to pass on information from the map.html to the edit.html
@@ -140,15 +135,14 @@ def decrementCount():
     cursor.execute(query, (amount, id))
     # need to commit the changes to SQL TABLE
     conn.commit()
+    cursor.close()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 @app.route("/getPins",methods=['POST'])
 def retrievePins():
     if request.method == 'POST':
         lat = request.form['Latitude']
-        print("LATITUDE:", lat)
         lng = request.form['Longitude']
-        print("LONGITUDE: ", lng)
     cursor = conn.cursor()
     query = 'SELECT * FROM person WHERE owner = True;'
     # cursor.execute(query)
@@ -156,11 +150,9 @@ def retrievePins():
     #stores the results in a variable
     data = cursor.fetchall()
     counter = 0
-    print('WHERE IS THIS data',data)
     dest = (lat, lng)
     responseData = []
     for i in data:
-        print(i)
         origin = (i[6] ,i[7])
         
         if geodesic(origin, dest).meters<5000:
@@ -174,8 +166,6 @@ def retrievePins():
                 "id":i[0],
                 "code":i[11]
             })
-    print("rendering Map2")
-    print(responseData)
     return Response(json.dumps(responseData), mimetype='text/json') 
     
 
@@ -184,7 +174,6 @@ def retrievePins():
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth(): #done
     #grabs information from the forms
-    print('in loginauth',request.form,request.form['username'],len(request.form))
     username = request.form['username']
     password = request.form['password']
 
@@ -201,7 +190,6 @@ def loginAuth(): #done
     cursor.execute(query, (username, password))
     #stores the results in a variable
     data = cursor.fetchone()
-    # print(data)
     #use fetchall() if you are expecting more than 1 data row
     cursor.close()
     error = None
@@ -210,7 +198,6 @@ def loginAuth(): #done
         #session is a built in
         try:
             session['username'] = username
-            print("method: ",request.method)
             # return redirect(url_for('home'))
             return render_template("map.html",username = username)
         except Exception as e:
@@ -228,9 +215,7 @@ def registerAuth(): #done
         #grabs information from the forms
         username = request.form['username']
         password = request.form['password']
-        print(password)
         password = hashlib.md5(password.encode()).hexdigest()
-        print(password)
         email = request.form['email']
         isOwner = request.form['isOwner']
         latitude = request.form['latitude']
@@ -260,7 +245,6 @@ def registerAuth(): #done
                 ins = 'INSERT INTO person (username, password, email, isOwner, latitude, longitude, description, address, reservationAmount, restaurantName,code) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)'
                 cursor.execute(ins,(username, password, email, True, latitude, longitude, description, address, reservationAmount, restaurantName,code))
             else:
-                print
                 ins = 'INSERT INTO person (username, password, email, isOwner) VALUES(%s, %s, %s, %s)'
                 cursor.execute(ins,(username,password, email, False))
             conn.commit()
@@ -270,7 +254,6 @@ def registerAuth(): #done
         return render_template('register.html')
 
 def findUser(username):
-    print("WHERE IS THIS",username,type(username))
     cursor = conn.cursor()
     query = 'SELECT * FROM person WHERE username = %s'
     cursor.execute(query,[username])
@@ -289,7 +272,6 @@ def editRestaurantAuth():
         password = request.form['password']
         password = hashlib.md5(password.encode()).hexdigest()
         email = request.form['email']
-        print(request.form['isOwner'])
         if request.form['isOwner'] == 'true':
             latitude = request.form['latitude']
             longitude = request.form['longitude']
@@ -303,7 +285,6 @@ def editRestaurantAuth():
         else:
             update = "UPDATE person SET password = %s, email = %s WHERE username = %s"
             cursor.execute(update,(password,email,username))
-            print('did it go thru')
         conn.commit()
         cursor.close()
         return 'success'

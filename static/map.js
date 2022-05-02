@@ -43,10 +43,7 @@ function clearMarkers() {
 function displayPins(data) {
     // var mapCanvas = document.getElementById('map_canvas');
     var location, marker;
-    console.log(typeof(data));
     for (let i = 0; i < data.length; i++) {
-        console.log({ lat: data[i]["latitude"], lng: data[i]["longitude"] });
-        console.log(map);
         // location = new google.maps.LatLng(data[i]["latitude"],data[i]["longitude"]);
         new google.maps.Marker({
             position: { lat: data[i]["latitude"], lng: data[i]["longitude"] },
@@ -63,7 +60,6 @@ function sendCoord(lat, lng) {
         "Longitude": lng,
     };
     $.post("/getPins", dict, function(data, status) {
-        console.log("Data: " + data.longitude + "\nStatus: " + status);
         displayPins(JSON.parse(JSON.stringify(data)));
         array = JSON.parse(JSON.stringify(data))
         displayStores();
@@ -112,7 +108,6 @@ function decrementCount(id) {
 
   count = array[curIndex]["count"]
   $.post("/decrementCount", { "id": id, "count": count }, function(data, status) {
-      console.log("STATUS: ", status)
       if (status == "success") {
           count = document.getElementById(id).innerHTML;
           count = count.slice(15);
