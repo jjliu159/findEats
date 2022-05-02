@@ -20,7 +20,8 @@ latitude FLOAT,
 longitude FLOAT,
 description VARCHAR(200),
 address VARCHAR(100),
-reservationAmount INT
+reservationAmount INT,
+code VARCHAR(10)
 );
 
 ALTER TABLE Person(
