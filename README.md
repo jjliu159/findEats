@@ -25,7 +25,9 @@ code VARCHAR(10)
 
 2) open terminal and pip install: flask, psycopg2, geopy
 
-3) in terminal: 
+3) set conn = psycopg2.connect in init.py to your PostgresSQL authentication
+
+4) in terminal: 
     a) go to folder directory
     b) type in "set FLASK_APP = init.py"
     c) type in "flask run"
