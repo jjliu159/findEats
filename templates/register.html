@@ -1,22 +1,102 @@
+<!DOCTYPE html>
 <html>
+
 <head>
 </head>
-<body>
-<form action="/registerAuth" method="POST">
-	<input type="text" name = "username" placeholder="username" required/> </br>
-	<input type="password" name = "password" placeholder="password" required/></br>
-	<input type="text" name = "firstName" placeholder="first name" required/> </br>
-	<input type="text" name = "lastName" placeholder="last name" required/> </br>
-	<input type="text" name = "email" placeholder="email" required/> </br>
-	<input type="submit" value = Register />
-	{% if error %}
-		<p class="error"><strong>Error:</strong> {{error}}</p>
-	{% endif %}
-</form>
 
-<a href="/">Go back</a>
+<body>
+	<div class="reg_pic"> 
+    <div class="login_reg_header"> 
+        <div class="login_reg_header_title">
+			<h1>Find</h1> 
+			<h1>Eats</h1>
+        </div>
+    </div>
+
+    <!-- <script src="map.js"></script> -->
+    <div class="reg_container">
+        <div class="registering_form">
+			<div class="actual_form_box"> 
+				<div class="form-group">
+					<label for="username">User Name</label>
+					<input type="text" class="form-control" id="username" placeholder="Enter your user name" required/></br>
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="password" placeholder="Enter your password" required/></br>
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="text" class="form-control" id="email" placeholder="Enter your email address" required/> </br>
+				</div>
+				<!-- ===================================== -->
+				<button onclick="register()" class="btn btn-primary">Register</button>
+                <br>
+				<a href="/login" class="reg_in_login">Already have an account? Sign in here.</a>
+                <br>
+                <a href="/register2"> Are you are store owner? Register Here.</a>
+			</div>
+    	</div>
+
+	</div>
+	<!-- ===================================================================== -->
+    <script>
+        // console.log('testsetst')
+        // document.getElementById("restaurantName").style.visibility = "hidden"
+        // document.getElementById("user_input_autocomplete_address").style.visibility = "hidden"
+        // document.getElementById("description").style.visibility = "hidden"
+        // document.getElementById("reservationAmount").style.visibility = "hidden"
+
+
+        function register() {
+            //preparing to send information over to the backend by organizing data into a data structure
+            var dict = {
+                'username': document.getElementById("username").value,
+                'password': document.getElementById('password').value,
+                'email': document.getElementById('email').value,
+                'isOwner': false,
+                'latitude': null,
+                'longitude': null,
+                'description': null,
+                'address': null,
+                'reservationAmount': null,
+                'restaurantName': null
+            };
+            //this will post into flask, and because we posted through this method
+            //the backend will no longer be able to redirect pages 
+            //the fix around is to have the backend send back a message to the frontend
+            //to let it know that it's time to switch pages
+            $.post("/registerAuth", dict, function(response) {
+                if (response == "success") {
+                    window.location.href = "/";
+                } else {
+                    alert("User already exists")
+                }
+            })
+        }
+
+        //the script runs here since registeraddress is not found if created on a different file
+    </script>
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{error}}</p>
+    {% endif %}
+
+    <!-- <a href="/">Go back</a> -->
 
 </body>
 
 
 </html>
+
+<!-- 
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places">
+</script>
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Include Google Maps JS API  -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="style1.css">
+<!-- Custom JS code to bind to Autocomplete API -->
+<script type="text/javascript" src="autocomplete.js"></script>

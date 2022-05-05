@@ -1,0 +1,381 @@
+/* @import url(https://fonts.googleapis.com/css?family=Josefin+Sans:300,400); */
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+}
+
+/*index.html PAGE ===================================================================*/
+
+.mainPic{
+    background-image: url('front_image1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    /* opacity: 2; */
+    height: 100vh;
+    width: 100%;
+    /* background-color: rgba(0, 0, 0, .5); */
+}
+
+.buttons{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+} 
+
+a.button1{
+    display:inline-block;
+    padding:0.4em 1.2em;
+    margin:0 0.4em 0.3em 0;
+    border-radius:2em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-weight:300;
+    font-size: 3vmin;
+    color: black;
+    background-color: wheat;
+    transition: all 0.2s;
+    margin-top: 30px;
+    margin-inline: 10px;
+}
+a.button1:hover{
+    background-color: whitesmoke;
+}
+@media all and (max-width:30em){
+    a.button1{
+        display:block;
+        margin:0.2em auto;
+    }
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11vmin;
+    /* font-family: sans-serif; */
+    /* font-family: 'Helvetica Bold', 'Arial', sans-serif; */
+    /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+    color: wheat;
+    margin-top: 100px;
+    letter-spacing: 4px;
+    border-color: wheat;
+    border: 2px solid wheat;
+    background-color: rgba(0, 0, 0, .7);
+}
+
+.title > h1{
+    margin-inline: 13px;;
+}
+/* ===================================================================================================== */
+section {
+    height: 100vh;
+    width: 100%;
+    display: table;
+    
+  }
+
+  p{
+    /* color: wheat; */
+    font-family: arial;
+    display: table-cell;
+    text-align: center;
+    /* vertical-align: middle; */
+    line-height: 30px;
+  }
+  
+  .scroll-down {
+    opacity: 1;
+    -webkit-transition: all .5s ease-in 3s;
+    transition: all .5s ease-in 3s;
+  }
+  
+  .scroll-down {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    margin-left: -16px;
+    display: block;
+    width: 64px;
+    height: 64px;
+    border: 2px solid wheat;
+    background-size: 14px auto;
+    border-radius: 50%;
+    z-index: 2;
+    -webkit-animation: bounce 2s infinite 2s;
+    animation: bounce 2s infinite 2s;
+    -webkit-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+    background-color: rgba(0, 0, 0, .7);
+  }
+
+  .scroll-down:before {
+      position: absolute;
+      top: calc(50% - 8px);
+      left: calc(50% - 6px);
+      transform: rotate(-45deg);
+      display: block;
+      width: 12px;
+      height: 12px;
+      content: "";
+      border: 2px solid wheat;
+      border-width: 0px 0 2px 2px;
+  }
+  
+  @keyframes bounce {
+    0%,
+    100%,
+    20%,
+    50%,
+    80% {
+      -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+      transform: translateY(0);
+    }
+    40% {
+      -webkit-transform: translateY(-10px);
+      -ms-transform: translateY(-10px);
+      transform: translateY(-10px);
+    }
+    60% {
+      -webkit-transform: translateY(-5px);
+      -ms-transform: translateY(-5px);
+      transform: translateY(-5px);
+    }
+  }
+  
+/* ===================================================================================================== */
+.content2{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: #faeed9;
+} 
+
+.fwdes > h1{
+    font-size: 3rem;
+    text-align: right;
+}
+
+.fwdes{
+    margin-right: 30px;
+    margin-bottom: 50px;
+}
+.fwdes > p{
+    text-align: right;
+}
+
+.fwpic{
+    margin-bottom: 50px;
+}
+
+.resize {
+    width: 800px;
+    height: auto;
+}
+
+.heading{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-size: 1.3rem;
+    position: relative;
+    bottom: 150px;
+  }
+
+.contentItem {
+    display: flex;
+    flex-direction: column;
+    padding: 1vmin;
+    color: black;
+    border-radius: 0.25vmin;
+    height: 100%;
+  }
+
+#content1{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 4vmin;
+    grid-row-gap: 1vmin;
+    padding: 10vmin;
+    font-size: 1rem;
+    position: relative;
+    bottom: 100px;
+    margin-top: 100px;
+  }
+
+.name{
+    font-size: 2rem;
+    text-align: center;
+}
+
+.image{
+    margin-top: 40px;
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+}
+
+.content3{
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+    background-color: rgb(26, 25, 25);
+} 
+
+.bottom_txt{
+    display: flex;
+    justify-content: flex-end;
+    text-decoration: none;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.bottom_txt2{
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid wheat;
+    color: wheat;
+}
+.email{
+    margin-right: 1050px;
+}
+
+/* LOGIN PAGE ========================================================================*/
+
+.login_reg_header{
+    background-color: wheat;
+}
+
+.login_reg_header_title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4vmin;
+    color: black;
+    padding: 10px;
+    /* margin-top: 100px; */
+    letter-spacing: 4px;
+}
+
+.login_reg_header_title > h1{
+    margin-inline: 5px;
+    font-family: serif;
+}
+
+.error{
+    display: flex;
+    justify-content: center;
+}
+
+.login_container{
+    margin-top: 100px;
+}
+
+.signin_login_form{
+    padding-left: 35%;
+    padding-right: 35%;
+}
+
+.login_pic{
+    background-image: url('login_image.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    /* opacity: 2; */
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.actual_form_box{
+    /* background-color: whitesmoke; */
+    border: 1px;
+    border-color: black;
+    padding: 30px;
+    background-color: #faeed9;
+    border-radius: 2em;
+}
+
+.reg_in_login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Edit PAGE ========================================================================*/
+
+.editpagepicUser{
+    background-image: url('edituser.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    height: 100vh;
+    width: 100%;
+}
+
+.editpageheadertitleUser{
+    background-color: wheat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    /* padding: 10px; */
+    letter-spacing: 4px;
+    font-size: 2.5vmin;
+    font-family: serif;
+}
+
+.editpageheadertitleUser > h1{
+    margin-inline: 5px;
+    font-family: serif;
+    padding: none;
+}
+
+.editpageusercontent{
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.editpageusercontentActualform{
+    border: 1px;
+    border-color: black;
+    padding: 60px;
+    background-color: #faeed9;
+    border-radius: 2em;
+}
+
+.p1, .p2, .p3, .p4, .p5, .p6{
+    display: flex;
+    flex-direction: column;
+}
+
+#editbutton, #usersubmitbutton{
+    border-radius: 2em;
+    width: 300px;
+}
+.q1, .q2{
+    width: 300px;
+}
+
+#editbutton{
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+/* EDIT OWNER PAGE ==================================================================*/
+
+.editpagepiconwer{
+    background-image: url('editOwnerPage.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    /* height: 100vh; */
+    width: 100%;
+}

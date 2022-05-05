@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<div class="editpagepicUser">
+    <div class="editpageheadertitleUser">
+        <h1>Find</h1> 
+        <h1>Eats</h1>
+    </div>  
+    
+    <div class="editpageusercontent">
+        <div class="editpageusercontentActualform">
+            <h1>Hello, {{username}} </h1>
+            <div class="p1">
+                <label for="password">Password</label>
+                <input class="q1" type="password" id = "password" placeholder = "Enter a new password" required/></br>
+            </div>
+            <div class="p2">
+                <label for="email">Email</label>
+                <input class="q2" type="text" id = "email" value= {{email}}> </br>
+            </div>
+            <button id="editbutton" onclick="edit()">Submit Changes</button>
+            <script>
+                function edit() {
+                    if (document.getElementById('password').value.length == 0){
+                        alert("Please enter a password")
+                    } 
+                    else{
+                        var dict = {
+                                'username': "{{username|safe}}",
+                                'password': document.getElementById('password').value,
+                                'email': document.getElementById('email').value,
+                                'isOwner': false
+                        }; 
+                        $.post("editRestaurantAuth",dict,function(response){
+                            if (response == "success"){
+                                window.location.href = "/"
+                            }
+                        })
+                    }
+            }
+            </script>
+
+                {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                {% endif %}
+
+                <form action="/loginAuth" method = "POST">
+                    <input type = 'hidden' name = 'username' id = 'username' value = {{username}}>
+                    <input type = 'hidden' name = 'password' id = 'password' value = {{password}}>
+                    <input type = 'hidden' name = 'fromEdit' id = 'fromEdit' value = True>
+                    <input id="usersubmitbutton" type = "submit" value ="Return to Map Page">
+                    {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                    {% endif %}
+                </form>
+                
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>
+
+<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places"></script>
+
+<script type="text/javascript" src="autocomplete.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

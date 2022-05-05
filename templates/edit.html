@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<!-- <script src="map.js"></script> -->
+
+
+<!-- needs quotation marks in the (EXAMPLE HERE: "{{example}}") in order to display the full string vs
+ {{example}} which will not dispaly the full string-->
+<div class="editpagepiconwer"> 
+    <div class="editpageheadertitleUser">
+        <h1>Find</h1> 
+        <h1>Eats</h1>
+    </div>  
+ 
+    <div class="editpageusercontent">
+        <div class="editpageusercontentActualform">
+            <h1>Hello, {{username}} </h1>
+            <h2>Your code is {{code}}</h2>
+            <div class="p1">
+                <label for="password">Password</label>
+                <input class="q1" type="password" id = "password" placeholder = "Enter a new password" required/></br>
+            </div>
+            <div class="p2">
+                <label for="email1">Email</label>
+                <input type="text" id = "email" value= {{email}}></br>
+            </div>
+            <div class="p3">
+                <label for="restaurantName">Restaurant Name</label>
+                <input type="text" id = "restaurantName" value="{{restaurantName}}"></br>
+            </div>
+            <div class="p4">
+                <label for="user_input_autocomplete_address">Restaurant Address</label>
+                <input name="user_input_autocomplete_address" id = "user_input_autocomplete_address" value="{{address}}"> </br>
+            </div>
+            <div class="p5">
+                <label for="description">Description</label>
+                <input type="text" id = "description" value="{{description}}"></br>
+            </div>
+            <div class="p6">
+                <label for="reservationAmount">Reservation Amount</label>
+                <input type="int" id = "reservationAmount" value= {{reservationAmount}}></br>
+            </div>
+
+            
+            
+    
+            <button id="editbutton" onclick="edit()">Submit Changes</button>
+            <script>
+                function edit() {
+                    address = document.getElementById("user_input_autocomplete_address").value;
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ address: address }, (results, status) => {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        var lat = results[0].geometry.location.lat();
+                        var lng = results[0].geometry.location.lng();
+                        // Display Longitude and Latitude
+
+                        if (document.getElementById('password').value.length == 0){
+                            alert("Please enter a password")
+                        } 
+                        else{
+                            var dict = {
+                                'username': "{{username|safe}}",
+                                'password': document.getElementById('password').value,
+                                'email': document.getElementById('email').value,
+                                'isOwner': true,
+                                'latitude': lat,
+                                'longitude': lng,
+                                'description': document.getElementById("description").value,
+                                'address': address,
+                                'reservationAmount': document.getElementById("reservationAmount").value,
+                                'restaurantName': document.getElementById("restaurantName").value
+                            }; 
+                            $.post("editRestaurantAuth",dict,function(response){
+                                if (response == "success"){
+                                    window.location.href = "/"
+                                }
+                                else{
+                                    alert("Checking")
+                                }
+                            })
+                        }
+                    }
+                    else{
+                        alert("Geocode was not successful for the following reason" + status);
+                    }
+                });
+            }
+            </script>
+
+            {% if error %}
+                <p class="error"><strong>Error:</strong> {{error}}</p>
+            {% endif %}
+
+            <form action="/loginAuth" method = "POST">
+                <input type = 'hidden' name = 'username' id = 'username' value = {{username}}>
+                <input type = 'hidden' name = 'password' id = 'password' value = {{password}}>
+                <input type = 'hidden' name = 'fromEdit' id = 'fromEdit' value = True>
+                <input id="usersubmitbutton" type = "submit" value ="Return to Map Page">
+                {% if error %}
+                <p class="error"><strong>Error:</strong> {{error}}</p>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+
+</html>
+
+<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyConR294pViXPOrz4QX2vP9e3hZsZNX1X0&libraries=places"></script>
+
+<script type="text/javascript" src="autocomplete.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
